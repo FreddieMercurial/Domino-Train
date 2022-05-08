@@ -1,0 +1,21 @@
+{
+  "name": "domino-train-npm-js",
+  "version": "1.0.0",
+  "description": "npm-js for domino-train",
+  "main": "domino-train-npm-js.js",
+  "scripts": {
+    "build": "webpack ./src/domino-train-npm-js.js --output-path ../wwwroot --output-filename npmjs.bundle.js"
+  },
+  "keywords": [],
+  "author": "Digital Defiance and contributors",
+  "license": "MIT",
+  "devDependencies": {
+    "firebase": "^9.8.0",
+    "webpack": "^5.0.0",
+    "webpack-cli": "^4.0.0"
+  },
+  "dependencies": {
+    "igniteui-webcomponents-core": "^1.1.6",
+    "igniteui-webcomponents-gauges": "^1.1.6"
+  }
+}

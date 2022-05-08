@@ -10,4 +10,8 @@
 
 Welcome to your new app.
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+<igc-radial-gauge id="rg" height="400px" width="400px" value="25" interval="5" minimum-value="0" maximum-value="100">
+    <igc-radial-gauge-range start-value="0" end-value="30" brush="red"></igc-radial-gauge-range>
+    <igc-radial-gauge-range start-value="30" end-value="60" brush="yellow"></igc-radial-gauge-range>
+    <igc-radial-gauge-range start-value="60" end-value="100" brush="green"></igc-radial-gauge-range>
+</igc-radial-gauge>

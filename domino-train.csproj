@@ -18,4 +18,9 @@
     <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
   </ItemGroup>
 
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="npm install" WorkingDirectory="npm-js" />
+    <Exec Command="npm run build" WorkingDirectory="npm-js" />
+  </Target>
+
 </Project>
