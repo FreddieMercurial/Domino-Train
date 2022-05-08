@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Domino Train</title>
+    <base href="/" />
+    <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/app.css" rel="stylesheet" />
+    <link href="domino-train.styles.css" rel="stylesheet" />
+    <link href="manifest.json" rel="manifest" />
+    <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png" />
+    <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png" />
+</head>
+
+<body>
+    <div id="app">Loading...</div>
+    <p id="load">Firebase SDK Loading&hellip;</p>
+
+    <div id="blazor-error-ui">
+        An unhandled error has occurred.
+        <a href="" class="reload">Reload</a>
+        <a class="dismiss">🗙</a>
+    </div>
+    <script src="_content/Microsoft.AspNetCore.Components.WebAssembly.Authentication/AuthenticationService.js"></script>
+    <script src="_framework/blazor.webassembly.js"></script>
+    <script>navigator.serviceWorker.register('service-worker.js');</script>
+
+    <script src="https://www.gstatic.com/firebasejs/9.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.8.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.8.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.8.0/firebase-functions-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.8.0/firebase-messaging-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.8.0/firebase-storage-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.8.0/firebase-analytics-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.8.0/firebase-remote-config-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.8.0/firebase-performance-compat.js"></script>
+
+<!-- Insert this script at the bottom of the HTML, but before you use any Firebase services -->
+        <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.8.0/firebase-app.js'
+        // Add Firebase products that you want to use
+        import { auth } from 'https://www.gstatic.com/firebasejs/9.8.0/firebase-auth.js'
+        import { database } from 'https://www.gstatic.com/firebasejs/9.8.0/firebase-database.js'
+        import { firestore } from 'https://www.gstatic.com/firebasejs/9.8.0/firebase-firestore.js'
+        import { functions } from 'https://www.gstatic.com/firebasejs/9.8.0/firebase-functions.js'
+        import { messaging } from 'https://www.gstatic.com/firebasejs/9.8.0/firebase-messaging.js'
+        import { storage } from 'https://www.gstatic.com/firebasejs/9.8.0/firebase-storage.js'
+        // If you enabled Analytics in your project, add the Firebase SDK for Google Analytics
+        import { analytics } from 'https://www.gstatic.com/firebasejs/9.8.0/firebase-analytics.js'
+        import { remoteConfig } from 'https://www.gstatic.com/firebasejs/9.8.0/firebase-remote-config.js'
+        import { performance } from 'https://www.gstatic.com/firebasejs/9.8.0/firebase-performance.js'
+    </script>
+    <script defer src="npmjs.bundle.js"></script>
+    <!-- update the version number as needed -->
+    <!--<script defer src="/__/firebase/9.8.0/firebase-app-compat.js"></script>-->
+    <!-- include only the Firebase features as you need -->
+    <!--<script defer src="/__/firebase/9.8.0/firebase-auth-compat.js"></script>
+    <script defer src="/__/firebase/9.8.0/firebase-database-compat.js"></script>
+    <script defer src="/__/firebase/9.8.0/firebase-firestore-compat.js"></script>
+    <script defer src="/__/firebase/9.8.0/firebase-functions-compat.js"></script>
+    <script defer src="/__/firebase/9.8.0/firebase-messaging-compat.js"></script>
+    <script defer src="/__/firebase/9.8.0/firebase-storage-compat.js"></script>
+    <script defer src="/__/firebase/9.8.0/firebase-analytics-compat.js"></script>
+    <script defer src="/__/firebase/9.8.0/firebase-remote-config-compat.js"></script>
+    <script defer src="/__/firebase/9.8.0/firebase-performance-compat.js"></script>-->
+    <!--
+    initialize the SDK after all desired features are loaded, set useEmulator to false
+    to avoid connecting the SDK to running emulators.
+    -->
+    <!--<script defer src="/__/firebase/init.js?useEmulator=false"></script>-->
+</body>
+
+</html>

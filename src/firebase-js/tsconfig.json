@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "noImplicitAny": false,
+    "module": "commonjs",
+    "noEmitOnError": true,
+    "removeComments": false,
+    "sourceMap": true,
+    "allowJs": true,
+    "noEmit": true,
+    "target": "es6"
+  },
+  "exclude": [
+    "node_modules"
+  ],
+  "typingOptions": {
+    "enableAutoDiscovery": true
+  }
+}
