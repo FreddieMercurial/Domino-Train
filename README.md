@@ -1,2 +1,2 @@
 # Domino-Train
-C# Unity Domino Train (.Net 6)
+C# web multiplayer Domino Train (.Net 6 Blazor)
