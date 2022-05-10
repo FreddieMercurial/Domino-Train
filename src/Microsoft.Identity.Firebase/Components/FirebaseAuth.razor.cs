@@ -12,9 +12,9 @@ namespace Microsoft.Identity.Firebase.Components
     {
         [Inject] private static IJSRuntime jsRuntime { get; set; } = null!;
 
-        public static bool Authenticated { get; private set; }
+        public static bool IsAuthenticated { get; private set; }
 
-        public static FirebaseUser? User { get; private set; }
+        public static FirebaseUser? CurrentUser { get; private set; }
 
         protected async override void OnAfterRender(bool firstRender)
         {
@@ -31,11 +31,11 @@ namespace Microsoft.Identity.Firebase.Components
         {
             if (user == null)
             {
-                Authenticated = false;
+                IsAuthenticated = false;
             }
             else
             {
-                User = user;
+                CurrentUser = user;
             }
         }
 
@@ -66,6 +66,11 @@ namespace Microsoft.Identity.Firebase.Components
             // if available locally, get api key from environment
             var environmentKey = Environment.GetEnvironmentVariable("FIREBASE_API_KEY");
             return !string.IsNullOrEmpty(environmentKey) ? environmentKey : null;
+        }
+
+        public static void SignOut()
+        {
+            CurrentUser = null;
         }
     }
 }

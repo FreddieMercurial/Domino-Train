@@ -40,13 +40,13 @@ namespace Microsoft.Identity.Firebase.Models
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
             var identity = new ClaimsIdentity();
-            if (!FirebaseAuth.Authenticated)
+            if (!FirebaseAuth.IsAuthenticated)
             {
                 var authState = new AuthenticationState(new ClaimsPrincipal(identity)); 
                 return authState;
             }
 
-            var user = FirebaseAuth.User!;
+            var user = FirebaseAuth.CurrentUser!;
             var claims = ParseClaimsFromJwt(user.stsTokenManager.accessToken).ToList();
             identity = new ClaimsIdentity(claims, "firebase");
             return await Task.FromResult(new AuthenticationState(new ClaimsPrincipal(identity)));

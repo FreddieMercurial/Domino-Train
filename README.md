@@ -7,3 +7,12 @@ C# web multiplayer Domino Train (.Net 6 Blazor)
 * Firebase and Blazor playing nice
 
 Authentication integration in progress
+
+## References
+* https://code-maze.com/blazor-webassembly-authentication-aspnetcore-identity/
+* https://code-maze.com/authenticationstateprovider-blazor-webassembly/
+* https://github.com/CodeMazeBlog/blazor-series
+* https://social.technet.microsoft.com/wiki/contents/articles/52576.blazor-deploying-an-application-on-firebase.aspx
+* https://github.com/cschweig2/TrailBlazor
+
+Quite a few more!
