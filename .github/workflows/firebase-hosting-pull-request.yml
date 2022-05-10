@@ -12,6 +12,7 @@ jobs:
       - run: cd src/firebase-js && npm ci && npm run build
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
+          entryPoint: src/firebase-js
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_DOMINO_TRAIN }}'
           projectId: domino-train
