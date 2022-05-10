@@ -9,30 +9,47 @@ using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.Net.Http.Headers;
+using System.Text.Json;
 using Microsoft.Identity.Firebase.Components;
 
 namespace Microsoft.Identity.Firebase.Models
 {
     public class StateProvider : AuthenticationStateProvider
     {
-        public async override Task<AuthenticationState> GetAuthenticationStateAsync()
+        public static IEnumerable<Claim> ParseClaimsFromJwt(string jwt)
+        {
+            var claims = new List<Claim>();
+            var payload = jwt.Split('.')[1];
+
+            var jsonBytes = ParseBase64WithoutPadding(payload);
+
+            var keyValuePairs = JsonSerializer.Deserialize<Dictionary<string, object>>(jsonBytes);
+            claims.AddRange(keyValuePairs.Select(kvp => new Claim(kvp.Key, kvp.Value.ToString()!)));
+            return claims;
+        }
+        private static byte[] ParseBase64WithoutPadding(string base64)
+        {
+            switch (base64.Length % 4)
+            {
+                case 2: base64 += "=="; break;
+                case 3: base64 += "="; break;
+            }
+            return Convert.FromBase64String(base64);
+        }
+        public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
             var identity = new ClaimsIdentity();
-            if (FirebaseAuth.Authenticated)
+            if (!FirebaseAuth.Authenticated)
             {
-                var user = FirebaseAuth.User!;
-
-                    var claims = new List<Claim>
-                    {
-                        new Claim(ClaimTypes.Name, user.uid),
-                        new Claim(ClaimTypes.Email, user.email),
-                        new Claim(ClaimTypes.Role, "Basic User")
-                    };
-                    identity = new ClaimsIdentity(claims, "authentication");
-                    return await Task.FromResult(new AuthenticationState(new ClaimsPrincipal(identity)));
+                var authState = new AuthenticationState(new ClaimsPrincipal(identity)); 
+                return authState;
             }
-            AuthenticationState authState = new AuthenticationState(new ClaimsPrincipal(identity));
-            return authState;
+
+            var user = FirebaseAuth.User!;
+            var claims = ParseClaimsFromJwt(user.stsTokenManager.accessToken).ToList();
+            identity = new ClaimsIdentity(claims, "firebase");
+            return await Task.FromResult(new AuthenticationState(new ClaimsPrincipal(identity)));
         }
 
         public void ManageUser()
