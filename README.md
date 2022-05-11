@@ -9,6 +9,7 @@ C# web multiplayer Domino Train (.Net 6 Blazor)
 Authentication integration in progress
 
 ## References
+### blazor
 * https://code-maze.com/blazor-webassembly-authentication-aspnetcore-identity/
 * https://code-maze.com/authenticationstateprovider-blazor-webassembly/
 * https://github.com/CodeMazeBlog/blazor-series
@@ -16,5 +17,14 @@ Authentication integration in progress
 * https://github.com/cschweig2/TrailBlazor
 * https://docs.microsoft.com/en-us/aspnet/core/blazor/security/webassembly/hosted-with-identity-server?view=aspnetcore-3.1&tabs=visual-studio
 * https://docs.microsoft.com/en-us/aspnet/core/blazor/security/webassembly/?view=aspnetcore-3.1
+### rules
+* https://www.dominorules.com/mexican-train
+* https://www.thesprucecrafts.com/mexican-train-dominoes-complete-rules-410911
+* https://mexicantrain.com/blog/rules-double6-double15.html
+* https://www.mexicantrainfun.com/questions-answers/
+* https://en.wikipedia.org/wiki/Mexican_Train
+* https://www.mexicantrainfun.com/mexican-train-rules/
+### misc
+* https://www.c-sharpcorner.com/article/asp-net-core-blazor-simple-game-development-using-net-core-3-0-preview-web-api/?msclkid=10f31adacee811ec8c09f9cbd6eab264
 
 Quite a few more!
