@@ -14,5 +14,7 @@ Authentication integration in progress
 * https://github.com/CodeMazeBlog/blazor-series
 * https://social.technet.microsoft.com/wiki/contents/articles/52576.blazor-deploying-an-application-on-firebase.aspx
 * https://github.com/cschweig2/TrailBlazor
+* https://docs.microsoft.com/en-us/aspnet/core/blazor/security/webassembly/hosted-with-identity-server?view=aspnetcore-3.1&tabs=visual-studio
+* https://docs.microsoft.com/en-us/aspnet/core/blazor/security/webassembly/?view=aspnetcore-3.1
 
 Quite a few more!
