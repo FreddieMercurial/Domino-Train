@@ -1,6 +1,6 @@
-using System.Collections.Immutable;
 using DominoTrain.Enumerations;
 using DominoTrain.Models;
+using System.Collections.Immutable;
 
 namespace DominoTrain.Interfaces;
 
@@ -20,7 +20,8 @@ public interface ISetRules
     public ImmutableDictionary<int, int> SetSizesByHighTile { get; }
 
     public ImmutableDictionary<int, SetInfo>
-        PlayerCountToMaxDominoes { get; }
+        PlayerCountToMaxDominoes
+    { get; }
 
     public bool PlayOrderClockwise { get; }
 

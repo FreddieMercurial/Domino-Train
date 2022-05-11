@@ -1,6 +1,6 @@
-using System.Collections.Immutable;
 using DominoTrain.Enumerations;
 using DominoTrain.Interfaces;
+using System.Collections.Immutable;
 
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable MemberCanBeProtected.Global
@@ -25,7 +25,8 @@ public abstract class SetRules : ISetRules
     }.ToImmutableDictionary();
 
     protected ImmutableDictionary<int, SetInfo>
-        _playerCountToMaxDominoes { get; init; } = null!;
+        _playerCountToMaxDominoes
+    { get; init; } = null!;
 
     public RuleSetType RuleSetType { get; protected init; }
 

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
+﻿using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.Identity.Firebase.Components;
 using Microsoft.JSInterop;
 
@@ -11,13 +6,15 @@ namespace Microsoft.Identity.Firebase.Models
 {
     public class FirebaseSignOutSessionStateManager : SignOutSessionStateManager
     {
+        private readonly IJSRuntime _jsRuntime;
         public FirebaseSignOutSessionStateManager(IJSRuntime jsRuntime) : base(jsRuntime)
         {
+            this._jsRuntime = jsRuntime;
         }
 
         public override ValueTask SetSignOutState()
         {
-            FirebaseAuth.SignOut();
+            this._jsRuntime!.InvokeVoidAsync("window.firebaseSignOut");
             return new ValueTask();
         }
     }

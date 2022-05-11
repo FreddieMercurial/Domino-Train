@@ -1,7 +1,7 @@
-﻿using System.Collections.Immutable;
-using System.Runtime.Serialization;
-using DominoTrain.Interfaces;
+﻿using DominoTrain.Interfaces;
 using DominoTrain.Models.Players;
+using System.Collections.Immutable;
+using System.Runtime.Serialization;
 
 namespace DominoTrain.Models;
 
@@ -83,13 +83,13 @@ public class DominoSet
         var maxDominoes = this.Rules.PlayerCountToMaxDominoes[key: playerCount];
         var newSet = new List<Domino>();
         for (var value1 = 0; value1 <= maxDominoes.HighTile; value1++)
-        for (var value2 = value1; value2 <= maxDominoes.HighTile; value2++)
-            newSet.Add(item: new Domino(
-                game: this.game,
-                set: this,
-                owner: null,
-                value1: value1,
-                value2: value2));
+            for (var value2 = value1; value2 <= maxDominoes.HighTile; value2++)
+                newSet.Add(item: new Domino(
+                    game: this.game,
+                    set: this,
+                    owner: null,
+                    value1: value1,
+                    value2: value2));
         return (
             Dominoes: newSet,
             maxDominoes.DrawCount,

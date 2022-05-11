@@ -5,7 +5,7 @@ import { IgcRadialGaugeCoreModule } from 'igniteui-webcomponents-gauges';
 import { IgcRadialGaugeModule } from 'igniteui-webcomponents-gauges';
 
 import { firebase, initializeApp } from 'firebase/app';
-import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword } from 'firebase/auth';
+import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, signOut, GoogleAuthProvider } from 'firebase/auth';
 import { getDatabase } from "firebase/database";
 import { getAnalytics } from "firebase/analytics";
 
@@ -23,18 +23,19 @@ window.updateValue = function (value) {
     rg.value = value;
 }
 
-window.firebaseApiKey = function () {
-    var keyElement = document.getElementById("firebaseApiKey");
-    if (keyElement === null || keyElement === undefined) {
-        return null;
-    }
-    return keyElement.innerText;
-}
-
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+/*
+ * https://firebase.google.com/docs/projects/api-keys?msclkid=50c2da1bd15411ec864a2051a4985260
+ * API keys for Firebase are different from typical API keys
+ * Unlike how API keys are typically used, API keys for Firebase services are not used to control access to backend resources; that can only be done with Firebase Security Rules (to control which users can access resources) and App Check (to control which apps can access resources).
+ *
+ * Usually, you need to fastidiously guard API keys (for example, by using a vault service or setting the keys as environment variables); however, API keys for Firebase services are ok to include in code or checked-in config files.
+ *
+ * Although API keys for Firebase services are safe to include in code, there are a few specific cases when you should enforce limits for your API key; for example, if you're using Firebase ML, Firebase Authentication with the email/password sign-in method, or a billable Google Cloud API. Learn more about these cases later on this page.
+ */
 const firebaseConfig = {
-    apiKey: window.firebaseApiKey(),
+    apiKey: atob('QUl6YVN5RF91X1pLckJob1hzdWhyVVdKZEFKaUxZdDVBQkY3bXE0'),
     authDomain: "domino-train.firebaseapp.com",
     projectId: "domino-train",
     storageBucket: "domino-train.appspot.com",
@@ -48,9 +49,15 @@ const app = initializeApp(firebaseConfig);
 
 export const auth = getAuth()
 const database = getDatabase();
+const provider = new GoogleAuthProvider();
+window.firebaseDotNetFirebaseAuthReference = null;
 
-
-window.firebaseInitialize = function (dotNetObjectReference) {
+window.firebaseInitialize = async function (dotNetObjectReference) {
+    if (window.firebaseDotNetFirebaseAuthReference !== null) {
+        console.log("Firebase already initialized, skipping");
+        return;
+    }
+    window.firebaseDotNetFirebaseAuthReference = dotNetObjectReference;
     // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
     // // The Firebase SDK is initialized and available here!
     //
@@ -65,26 +72,81 @@ window.firebaseInitialize = function (dotNetObjectReference) {
     // firebase.performance(); // call to activate
     //
     // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
-
+    
     try {
         console.log(`Firebase app "${app.name}" loaded`);
     } catch (e) {
         console.error(e);
     }
-    onAuthStateChanged(auth, user => {
-        dotNetObjectReference.invokeMethodAsync('OnAuthStateChanged', user);
-    });
+    // add observer to auth state changed
+    onAuthStateChanged(auth, window.firebaseAuthStateChanged);
 };
 
-window.firebaseCreateUser = async function (user, password) {
+window.firebaseAuthStateChanged = async function (user) {
+    console.log(window.firebaseDotNetFirebaseAuthReference);
+    console.log(user);
+    await window.firebaseDotNetFirebaseAuthReference.invokeMethodAsync('OnAuthStateChanged', user);
+}
+
+window.firebaseCreateUser = async function (email, password) {
     var userJsonData = null;
-    await createUserWithEmailAndPassword(auth, user, password).then((userCredential) => {
+    await createUserWithEmailAndPassword(auth, email, password).then(async (userCredential) => {
         userJsonData = JSON.stringify(userCredential.user);
+        await window.firebaseAuthStateChanged(userCredential.user);
     }).catch((e) => {
         console.error(e)
     });
     console.log(userJsonData);
     return userJsonData;
+};
+
+window.firebaseLoginUser = async function (email, password) {
+    var userJsonData = null;
+    await signInWithEmailAndPassword(auth, email, password)
+        .then(async (userCredential) => {
+            // Signed in 
+            userJsonData = JSON.stringify(userCredential.user);
+            await window.firebaseAuthStateChanged(userCredential.user);
+        })
+        .catch(async (error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.error(error)
+            await window.firebaseAuthStateChanged(null);
+            
+        });
+    console.log(userJsonData);
+    return userJsonData;
+};
+
+window.firebaseLoginWithGooglePopup = async function () {
+    var userJsonData = null;    
+    signInWithPopup(auth, provider)
+        .then(async (result) => {
+            // This gives you a Google Access Token. You can use it to access the Google API.
+            const credential = GoogleAuthProvider.credentialFromResult(result);
+            const token = credential.accessToken;
+            // The signed-in user info.
+            const user = result.user;
+            userJsonData = JSON.stringify(user);
+            await window.firebaseAuthStateChanged(result.user);
+        }).catch(async (error) => {
+            // Handle Errors here.
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            // The email of the user's account used.
+            const email = error.email;
+            // The AuthCredential type that was used.
+            const credential = GoogleAuthProvider.credentialFromError(error);
+            console.log(error);
+            await window.firebaseAuthStateChanged(null);
+        });
+    console.log(userJsonData);
+    return userJsonData;
+};
+
+window.firebaseSignOut = async function () {
+    await signOut(auth);
 }
 
 export default { app, auth, database }

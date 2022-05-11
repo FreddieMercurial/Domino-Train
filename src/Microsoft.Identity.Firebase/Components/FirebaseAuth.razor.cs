@@ -1,28 +1,36 @@
-﻿using System.Text.Json;
-using System.Text.Json.Nodes;
-using System.Text.Json.Serialization;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 using Microsoft.Identity.Firebase.Models;
 using Microsoft.JSInterop;
-using Microsoft.JSInterop.Implementation;
+using System.ComponentModel;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Components.Authorization;
 
 namespace Microsoft.Identity.Firebase.Components
 {
     public partial class FirebaseAuth : ComponentBase
     {
-        [Inject] private static IJSRuntime jsRuntime { get; set; } = null!;
+        [Inject] private static IJSRuntime StaticJsInterop { get; set; }
 
+        [Inject] private AuthenticationStateProvider AuthenticationStateProvider { get; set; }
+
+        [Inject] private static NavigationManager StaticNavigationManager { get; set; }
+
+        [Bindable(true)]
         public static bool IsAuthenticated { get; private set; }
 
+        [Bindable(true)]
         public static FirebaseUser? CurrentUser { get; private set; }
 
-        protected async override void OnAfterRender(bool firstRender)
+        private static bool Initialized { get; set; } = false;
+
+        protected override async Task OnAfterRenderAsync(bool firstRender)
         {
-            base.OnAfterRender(firstRender);
-            if (firstRender)
+            await base.OnAfterRenderAsync(firstRender);
+            if (!Initialized && _jsRuntime is not null)
             {
-                var dotNetHelper = DotNetObjectReference.Create(this);
-                await jsRuntime!.InvokeVoidAsync("window.firebaseInitialize", dotNetHelper);
+                await _jsRuntime.InvokeVoidAsync("window.firebaseInitialize", DotNetObjectReference.Create(this));
+                Initialized = true;
             }
         }
 
@@ -32,19 +40,21 @@ namespace Microsoft.Identity.Firebase.Components
             if (user == null)
             {
                 IsAuthenticated = false;
+                CurrentUser = null;
             }
             else
             {
                 CurrentUser = user;
             }
+            StateProvider.InvokeNotifyAuthenticationStateChanged();
         }
 
-        private static async Task<FirebaseUser?> CreateUser(string email, string password)
+        private static async Task<FirebaseUser?> CreateEmailUser(string email, string password)
         {
-            var userData = await jsRuntime!.InvokeAsync<string?>("window.firebaseCreateUser", email, password);
+            var userData = await StaticJsInterop!.InvokeAsync<string?>("window.firebaseCreateUser", email, password);
             if (string.IsNullOrEmpty(userData))
                 return null;
-            var userDataBytes = userData.ToCharArray().Select(c => (byte) c).ToArray();
+            var userDataBytes = userData.ToCharArray().Select(c => (byte)c).ToArray();
             var userDataStream = new MemoryStream(userDataBytes);
             var jsonSerializerOptions = new JsonSerializerOptions
             {
@@ -58,19 +68,13 @@ namespace Microsoft.Identity.Firebase.Components
             var userObject = await JsonSerializer.DeserializeAsync<FirebaseUser>(
                 utf8Json: userDataStream,
                 options: jsonSerializerOptions);
+            StateProvider.InvokeNotifyAuthenticationStateChanged();
             return userObject;
         }
 
-        public static string? GetFirebaseApiKey()
+        public async Task SignOut()
         {
-            // if available locally, get api key from environment
-            var environmentKey = Environment.GetEnvironmentVariable("FIREBASE_API_KEY");
-            return !string.IsNullOrEmpty(environmentKey) ? environmentKey : null;
-        }
-
-        public static void SignOut()
-        {
-            CurrentUser = null;
+            await _jsRuntime!.InvokeVoidAsync("window.firebaseSignOut", DotNetObjectReference.Create(this));
         }
     }
 }

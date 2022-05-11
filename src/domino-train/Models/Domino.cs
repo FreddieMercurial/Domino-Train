@@ -1,5 +1,5 @@
-﻿using System.Runtime.Serialization;
-using DominoTrain.Models.Players;
+﻿using DominoTrain.Models.Players;
+using System.Runtime.Serialization;
 
 namespace DominoTrain.Models;
 
@@ -38,8 +38,8 @@ public class Domino
         this.DominoSet = set;
         var swapValues = value1 <= value2;
         // Value1 is always less than or equal to Value2
-        this.Value1 = (byte) (swapValues ? value1 : value2);
-        this.Value2 = (byte) (swapValues ? value2 : value1);
+        this.Value1 = (byte)(swapValues ? value1 : value2);
+        this.Value2 = (byte)(swapValues ? value2 : value1);
         this.Owner = owner;
     }
 

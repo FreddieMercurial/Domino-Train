@@ -6,10 +6,10 @@ namespace Microsoft.Identity.Firebase.Models
     public class StsTokenManager
     {
         [JsonPropertyName("refreshToken")]
-        public string refreshToken { get; set; }
+        public string RefreshToken { get; set; }
         [JsonPropertyName("accessToken")]
-        public string accessToken { get; set; }
+        public string AccessToken { get; set; }
         [JsonPropertyName("expirationTime")]
-        public ulong expirationTime { get; set; }
+        public ulong ExpirationTime { get; set; }
     }
 }

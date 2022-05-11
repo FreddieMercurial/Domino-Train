@@ -1,5 +1,5 @@
-using System.Runtime.Serialization;
 using DominoTrain.Models.Players;
+using System.Runtime.Serialization;
 
 namespace DominoTrain.Models;
 
