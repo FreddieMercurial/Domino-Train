@@ -27,16 +27,20 @@ namespace Microsoft.Identity.Firebase.Models
         [JsonPropertyName("appId")] public string appId { get; private init; }
         [JsonPropertyName("measurementId")] public string measurementId { get; private init; }
 
-        public FirebaseConfiguration(IConfiguration configuration)
+        [JsonPropertyName("OpenIdConfiguration")] public FirebaseOpenIdConfiguration OpenIdConfiguration { get; private init; }
+
+        public FirebaseConfiguration(IConfiguration configuration, FirebaseOpenIdConfiguration? openIdConfiguration = null)
         {
-            var apiKeyBytes = Convert.FromBase64String(configuration["Firebase:ApiKey"]);
+            var configurationSection = configuration.GetSection("Firebase");
+            var apiKeyBytes = Convert.FromBase64String(configurationSection["ApiKey"]);
             apiKey = new string(apiKeyBytes.Select(b => (char)b).ToArray());
-            authDomain = configuration["Firebase:AuthDomain"];
-            projectId = configuration["Firebase:ProjectId"];
-            storageBucket = configuration["Firebase:StorageBucket"];
-            messagingSenderId = configuration["Firebase:MessagingSenderId"];
-            appId = configuration["Firebase:AppId"];
-            measurementId = configuration["Firebase:MeasurementId"];
+            authDomain = configurationSection["AuthDomain"];
+            projectId = configurationSection["ProjectId"];
+            storageBucket = configurationSection["StorageBucket"];
+            messagingSenderId = configurationSection["MessagingSenderId"];
+            appId = configurationSection["AppId"];
+            measurementId = configurationSection["MeasurementId"];
+            this.OpenIdConfiguration = openIdConfiguration ?? FirebaseOpenIdConfiguration.GetFirebaseOpenIdConfiguration(this);
         }
     }
 }

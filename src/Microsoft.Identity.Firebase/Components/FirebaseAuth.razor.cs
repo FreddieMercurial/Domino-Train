@@ -10,6 +10,13 @@ namespace Microsoft.Identity.Firebase.Components
 {
     public partial class FirebaseAuth : ComponentBase
     {
+        private readonly FirebaseConfiguration FirebaseConfiguration;
+
+        public FirebaseAuth(FirebaseConfiguration firebaseConfiguration) : base()
+        {
+            this.FirebaseConfiguration = firebaseConfiguration;
+        }
+
         [Inject] private static IJSRuntime StaticJsInterop { get; set; }
 
         [Inject] private AuthenticationStateProvider AuthenticationStateProvider { get; set; }
