@@ -18,8 +18,8 @@ var openIdConfiguration = await FirebaseOpenIdConfiguration.GetFirebaseOpenIdCon
         httpClient: httpClient);
 builder.Services.AddSingleton<FirebaseOpenIdConfiguration>(implementationInstance: openIdConfiguration);
 
-var firebaseConfiguration = new FirebaseConfiguration(builder.Configuration, openIdConfiguration);
-builder.Services.AddSingleton<FirebaseConfiguration>(implementationInstance: firebaseConfiguration);
+var firebaseConfiguration = new FirebaseProjectConfiguration(builder.Configuration, openIdConfiguration);
+builder.Services.AddSingleton<FirebaseProjectConfiguration>(implementationInstance: firebaseConfiguration);
 
 var firebaseAuth = new FirebaseAuth();
 FirebaseAuth.SetFirebaseConfiguration(firebaseConfiguration);

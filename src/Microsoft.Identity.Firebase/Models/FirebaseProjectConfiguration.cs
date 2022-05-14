@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 namespace Microsoft.Identity.Firebase.Models
 {
     [Serializable, DataContract]
-    public record FirebaseConfiguration
+    public record FirebaseProjectConfiguration
     {
         /// <summary>
         ///     Firebase API Key
@@ -29,7 +29,7 @@ namespace Microsoft.Identity.Firebase.Models
 
         [JsonPropertyName("OpenIdConfiguration")] public FirebaseOpenIdConfiguration OpenIdConfiguration { get; private init; }
 
-        public FirebaseConfiguration(IConfiguration configuration, FirebaseOpenIdConfiguration? openIdConfiguration = null)
+        public FirebaseProjectConfiguration(IConfiguration configuration, FirebaseOpenIdConfiguration? openIdConfiguration = null)
         {
             var configurationSection = configuration.GetSection("Firebase");
             var apiKeyBytes = Convert.FromBase64String(configurationSection["ApiKey"]);

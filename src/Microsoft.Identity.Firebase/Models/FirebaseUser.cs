@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.Identity.Firebase.Components;
+using System.Security.Claims;
 
 namespace Microsoft.Identity.Firebase.Models
 {
@@ -12,6 +13,16 @@ namespace Microsoft.Identity.Firebase.Models
     [Serializable]
     public class FirebaseUser : IdentityUser, IIdentity
     {
+        public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<FirebaseUser> manager, string authenticationType)
+        {
+            return StateProvider.ClaimsIdentityFromFirebaseUser(this);
+            // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
+            // var userIdentity = await manager.CreateIdentityAsync(this, authenticationType);
+            //var userIdentity = await manager.CreateAsync(this);
+            // Add custom user claims here
+            //return userIdentity;
+        }
+
         [JsonPropertyName("uid")] public string FirebaseUid { get; set; }
 
         /// <summary>

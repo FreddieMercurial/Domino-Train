@@ -44,18 +44,22 @@ namespace Microsoft.Identity.Firebase.Models
             return await Task.FromResult(AuthenticationStateFromUser(FirebaseAuth.CurrentUser));
         }
 
+        public static ClaimsIdentity ClaimsIdentityFromFirebaseUser(FirebaseUser user)
+        {
+            var claims = ParseClaimsFromJwt(user.StsTokenManager.AccessToken).ToList();
+            return new ClaimsIdentity(claims, user.ProviderData.First().ProviderId);
+        }
+
         public static AuthenticationState AuthenticationStateFromUser(FirebaseUser? user)
         {
-            var identity = new ClaimsIdentity();
             if (user is null)
             {
-                var authState = new AuthenticationState(new ClaimsPrincipal(identity));
+                var blankIdentity = new ClaimsIdentity();
+                var authState = new AuthenticationState(new ClaimsPrincipal(blankIdentity));
                 return authState;
             }
 
-            var claims = ParseClaimsFromJwt(user.StsTokenManager.AccessToken).ToList();
-            identity = new ClaimsIdentity(claims, user.ProviderData.First().ProviderId);
-            return new AuthenticationState(new ClaimsPrincipal(identity));
+            return new AuthenticationState(new ClaimsPrincipal(ClaimsIdentityFromFirebaseUser(user)));
         }
 
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()

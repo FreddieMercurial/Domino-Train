@@ -10,9 +10,9 @@ namespace Microsoft.Identity.Firebase.Components
 {
     public partial class FirebaseAuth : ComponentBase
     {
-        [Inject] public static FirebaseConfiguration? FirebaseConfiguration { get; private set; }
+        [Inject] public static FirebaseProjectConfiguration? FirebaseConfiguration { get; private set; }
 
-        public static void SetFirebaseConfiguration(FirebaseConfiguration configuration)
+        public static void SetFirebaseConfiguration(FirebaseProjectConfiguration configuration)
         {
             if (FirebaseConfiguration is null)
             {
