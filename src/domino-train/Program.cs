@@ -21,7 +21,8 @@ builder.Services.AddSingleton<FirebaseOpenIdConfiguration>(implementationInstanc
 var firebaseConfiguration = new FirebaseConfiguration(builder.Configuration, openIdConfiguration);
 builder.Services.AddSingleton<FirebaseConfiguration>(implementationInstance: firebaseConfiguration);
 
-var firebaseAuth = new FirebaseAuth(firebaseConfiguration);
+var firebaseAuth = new FirebaseAuth();
+FirebaseAuth.SetFirebaseConfiguration(firebaseConfiguration);
 builder.Services.AddSingleton<FirebaseAuth>(implementationInstance: firebaseAuth);
 
 builder.Services.AddOidcAuthentication(options =>
