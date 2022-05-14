@@ -17,6 +17,7 @@ Authentication integration in progress
 * https://github.com/cschweig2/TrailBlazor
 * https://docs.microsoft.com/en-us/aspnet/core/blazor/security/webassembly/hosted-with-identity-server?view=aspnetcore-3.1&tabs=visual-studio
 * https://docs.microsoft.com/en-us/aspnet/core/blazor/security/webassembly/?view=aspnetcore-3.1
+* https://github.com/nh43de/HostedBlazorWebAssemblyWithFirebase
 ### rules
 * https://www.dominorules.com/mexican-train
 * https://www.thesprucecrafts.com/mexican-train-dominoes-complete-rules-410911
