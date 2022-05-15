@@ -60,8 +60,12 @@ namespace Microsoft.Identity.Firebase.Components
             StateProvider.InvokeNotifyAuthenticationStateChanged();
         }
 
-        private static async Task<FirebaseUser?> CreateEmailUser(string email, string password)
+        public static async Task<FirebaseUser?> CreateEmailUser(string email, string password, IJSRuntime? jsRuntime = null)
         {
+            if (jsRuntime is not null)
+            {
+                StaticJsInterop = jsRuntime;
+            }
             var userData = await StaticJsInterop!.InvokeAsync<string?>("window.firebaseCreateUser", email, password);
             if (string.IsNullOrEmpty(userData))
                 return null;
@@ -79,8 +83,24 @@ namespace Microsoft.Identity.Firebase.Components
             var userObject = await JsonSerializer.DeserializeAsync<FirebaseUser>(
                 utf8Json: userDataStream,
                 options: jsonSerializerOptions);
+            CurrentUser = userObject;
             StateProvider.InvokeNotifyAuthenticationStateChanged();
             return userObject;
+        }
+
+        public static async Task<bool> UpdateEmailUserData(FirebaseUser user, IJSRuntime? jSRuntime = null)
+        {
+            if (!CurrentUser!.FirebaseUid.Equals(user.FirebaseUid))
+            {
+                return false;
+            }
+
+            if (jSRuntime is not null)
+            {
+                StaticJsInterop = jSRuntime;
+            }
+
+            return await StaticJsInterop!.InvokeAsync<bool>("window.firebaseUpdateProfile", user.FirstProvider);
         }
 
         public async Task SignOut()

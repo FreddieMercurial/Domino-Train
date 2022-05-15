@@ -46,8 +46,9 @@ namespace Microsoft.Identity.Firebase.Models
 
         public static ClaimsIdentity ClaimsIdentityFromFirebaseUser(FirebaseUser user)
         {
-            var claims = ParseClaimsFromJwt(user.StsTokenManager.AccessToken).ToList();
-            return new ClaimsIdentity(claims, user.ProviderData.First().ProviderId);
+            var accessToken = user.StsTokenManager.AccessToken;
+            var claims = ParseClaimsFromJwt(accessToken).ToList();
+            return new ClaimsIdentity(claims, user.FirstProvider!.ProviderId);
         }
 
         public static AuthenticationState AuthenticationStateFromUser(FirebaseUser? user)
