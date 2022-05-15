@@ -5,8 +5,7 @@ C# web multiplayer Domino Train (.Net 6 Blazor)
 * Javascript is contained in separate node js project supporting ECMAScript 6 (ES6)
 * Uses webpack to compile node js into single firebase enabled javascript to inject into blazor and places it in wwwwroot
 * Firebase and Blazor playing nice
-
-Authentication integration in progress
+* Reference project https://github.com/FreddieMercurial/Blazor-WASM-Firebase
 
 ## References
 ### blazor
