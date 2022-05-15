@@ -1,13 +1,13 @@
 ﻿@using Microsoft.AspNetCore.Components.Authorization
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using Microsoft.Identity.Firebase.Models
 
 @inject NavigationManager Navigation
 @inject SignOutSessionStateManager SignOutManager
-<!-- inject AuthenticationStateProvider AuthenticationStateProvider -->
 
 <AuthorizeView>
     <Authorized>
-        Hello, @context.User.Identity?.Name!
+        Hello, @FirebaseAuth.CurrentUser!.BestAvailableName!
         <button class="nav-link btn btn-link" @onclick="BeginSignOut">Log out</button>
     </Authorized>
     <NotAuthorized>

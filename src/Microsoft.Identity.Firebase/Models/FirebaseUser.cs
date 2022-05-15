@@ -37,6 +37,39 @@ namespace Microsoft.Identity.Firebase.Models
 
         [JsonPropertyName("providerData")] public IEnumerable<FirebaseProviderData> ProviderData { get; set; }
 
+        public FirebaseProviderData? FirstProvider => ProviderData?.First();
+
+        public string BestAvailableName
+        {
+            get
+            {
+                if (IsAnonymous)
+                {
+                    return $"Anonymous (firebase: {this.FirebaseUid})";
+                }
+
+                if (!ProviderData.Any())
+                    return !string.IsNullOrWhiteSpace(Email) ? Email : FirebaseUid;
+
+                foreach (var provider in this.ProviderData)
+                {
+                    if (!string.IsNullOrWhiteSpace(provider.DisplayName))
+                    {
+                        return provider.DisplayName;
+                    }
+                    else if (!string.IsNullOrWhiteSpace(provider.Email))
+                    {
+                        return provider.Email;
+                    }
+                    else if (!string.IsNullOrWhiteSpace(provider.PhoneNumber))
+                    {
+                        return provider.PhoneNumber;
+                    }
+                }
+                return $"Unknown (firebase: {this.FirebaseUid})";
+            }
+        }
+
         [JsonPropertyName("stsTokenManager")] public StsTokenManager StsTokenManager { get; set; }
 
         [JsonPropertyName("createdAt")] public string CreatedAt { get; set; }
@@ -53,11 +86,15 @@ namespace Microsoft.Identity.Firebase.Models
         [JsonPropertyName("apiKey")] public string ApiKey { get; set; }
         [JsonPropertyName("appName")] public string AppName { get; set; }
 
-        public string? AuthenticationType => ProviderData.First().ProviderId;
+        public string? AuthenticationType => FirstProvider?.ProviderId;
 
         public bool IsAuthenticated => FirebaseAuth.CurrentUser is null ? false : FirebaseAuth.CurrentUser.FirebaseUid.Equals(this.FirebaseUid);
 
-        public string? Name => this.Email;
+        
+        /// <summary>
+        /// Seems to be used by IIdentity users?
+        /// </summary>
+        public virtual string? Name => this.BestAvailableName;
 
         /// <summary>
         /// Initializes a new instance of <see cref="FirebaseUser"/>.
@@ -70,16 +107,5 @@ namespace Microsoft.Identity.Firebase.Models
             Id = Guid.NewGuid().ToString();
             SecurityStamp = Guid.NewGuid().ToString();
         }
-
-        /*
-        public static explicit operator FirebaseRemoteUserAccount(FirebaseUser user)
-        {
-            return new FirebaseRemoteUserAccount(user);
-        }
-
-        public static explicit operator RemoteAuthenticationState(FirebaseUser user)
-        {
-            return StateProvider.WasmAuthenticationStateFromUser(user);
-        }*/
     }
 }

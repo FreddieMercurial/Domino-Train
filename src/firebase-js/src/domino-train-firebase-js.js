@@ -5,7 +5,12 @@ import { IgcRadialGaugeCoreModule } from 'igniteui-webcomponents-gauges';
 import { IgcRadialGaugeModule } from 'igniteui-webcomponents-gauges';
 
 import { firebase, initializeApp } from 'firebase/app';
-import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, signOut, GoogleAuthProvider } from 'firebase/auth';
+import {
+    getAuth, onAuthStateChanged, signOut, updateProfile,
+    createUserWithEmailAndPassword, signInWithEmailAndPassword,
+    sendEmailVerification, sendPasswordResetEmail, 
+    signInWithPopup, GoogleAuthProvider
+} from 'firebase/auth';
 import { getDatabase } from "firebase/database";
 import { getAnalytics } from "firebase/analytics";
 
@@ -82,13 +87,74 @@ window.firebaseInitialize = async function (dotNetObjectReference) {
     onAuthStateChanged(auth, window.firebaseAuthStateChanged);
 };
 
+window.firebaseIsInitialized = function () {
+    if ((window.firebaseDotNetFirebaseAuthReference === undefined) ||
+        (window.firebaseDotNetFirebaseAuthReference === null)) {
+        console.error("firebase is not initialized");
+        return false;
+    }
+    return true;
+};
+
 window.firebaseAuthStateChanged = async function (user) {
-    console.log(window.firebaseDotNetFirebaseAuthReference);
+    if (!window.firebaseIsInitialized()) {
+        return;
+    }
     console.log(user);
     await window.firebaseDotNetFirebaseAuthReference.invokeMethodAsync('OnAuthStateChanged', user);
+};
+
+window.firebaseUpdateProfile = async function (userData) {
+    if (!window.firebaseIsInitialized()) {
+        return;
+    }
+    var updated = null;
+    await updateProfile(auth.currentUser, userData).then(async () => {
+        // Profile updated!
+        // ...
+        updated = true;
+    }).catch((error) => {
+        console.error(error);
+        // An error occurred
+        // ...
+        updated = false;
+    });
+    return updated;
+};
+
+window.firebaseSendEmailVerification = async function () {
+    if (!window.firebaseIsInitialized()) {
+        return;
+    }
+    var sent = null;
+    await sendEmailVerification(auth.currentUser)
+        .then(() => {
+            // Email verification sent!
+            // ...
+            sent = true;
+        }).catch((error) => {
+            sent = false;
+        });
+    return sent;
+}
+
+window.firebaseSendEmailPasswordReset = async function () {
+    if (!window.firebaseIsInitialized()) {
+        return;
+    }
+    var reset = null;
+    await sendPasswordResetEmail(auth, email).then(async () => {
+        reset = true;
+    }).catch((error) => {
+        reset = false;
+    });
+    return reset;
 }
 
 window.firebaseCreateUser = async function (email, password) {
+    if (!window.firebaseIsInitialized()) {
+        return;
+    }
     var userJsonData = null;
     await createUserWithEmailAndPassword(auth, email, password).then(async (userCredential) => {
         userJsonData = JSON.stringify(userCredential.user);
@@ -101,6 +167,9 @@ window.firebaseCreateUser = async function (email, password) {
 };
 
 window.firebaseLoginUser = async function (email, password) {
+    if (!window.firebaseIsInitialized()) {
+        return;
+    }
     var userJsonData = null;
     await signInWithEmailAndPassword(auth, email, password)
         .then(async (userCredential) => {
@@ -120,6 +189,9 @@ window.firebaseLoginUser = async function (email, password) {
 };
 
 window.firebaseLoginWithGooglePopup = async function () {
+    if (!window.firebaseIsInitialized()) {
+        return;
+    }
     var userJsonData = null;    
     signInWithPopup(auth, provider)
         .then(async (result) => {
@@ -146,6 +218,9 @@ window.firebaseLoginWithGooglePopup = async function () {
 };
 
 window.firebaseSignOut = async function () {
+    if (!window.firebaseIsInitialized()) {
+        return;
+    }
     await signOut(auth);
 }
 

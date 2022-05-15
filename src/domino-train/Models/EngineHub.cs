@@ -23,7 +23,7 @@ public class EngineHub
     {
         this.HubId = Guid.NewGuid();
         this.game = game;
-        this.GameId = this.GameId;
+        this.GameId = this.game.GameId;
         this.enginePlayerId = Guid.Empty;
         this.CommunityTrainPlayer = new CommunityTrainPlayer(game: this.game);
         this.CommunityTrainPlacedBy = null;
