@@ -17,6 +17,7 @@ C# web multiplayer Domino Train (.Net 6 Blazor)
 * https://docs.microsoft.com/en-us/aspnet/core/blazor/security/webassembly/hosted-with-identity-server?view=aspnetcore-3.1&tabs=visual-studio
 * https://docs.microsoft.com/en-us/aspnet/core/blazor/security/webassembly/?view=aspnetcore-3.1
 * https://github.com/nh43de/HostedBlazorWebAssemblyWithFirebase
+* https://github.com/HugoRheaume/H21-609-Equipe04
 ### rules
 * https://www.dominorules.com/mexican-train
 * https://www.thesprucecrafts.com/mexican-train-dominoes-complete-rules-410911
