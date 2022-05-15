@@ -6,16 +6,15 @@ namespace Microsoft.Identity.Firebase.Models
 {
     public class FirebaseSignOutSessionStateManager : SignOutSessionStateManager
     {
-        private readonly IJSRuntime _jsRuntime;
+        private readonly IJSRuntime jsRuntime;
         public FirebaseSignOutSessionStateManager(IJSRuntime jsRuntime) : base(jsRuntime)
         {
-            this._jsRuntime = jsRuntime;
+            this.jsRuntime = jsRuntime;
         }
 
         public override ValueTask SetSignOutState()
         {
-            this._jsRuntime!.InvokeVoidAsync("window.firebaseSignOut");
-            return new ValueTask();
+            return this.jsRuntime.InvokeVoidAsync("window.firebaseSignOut", DotNetObjectReference.Create(FirebaseAuth.Instance!));
         }
     }
 }

@@ -26,7 +26,7 @@ namespace Microsoft.Identity.Firebase.Models
             var jsonBytes = ParseBase64WithoutPadding(payload);
 
             var keyValuePairs = JsonSerializer.Deserialize<Dictionary<string, object>>(jsonBytes);
-            claims.AddRange(keyValuePairs.Select(kvp => new Claim(kvp.Key, kvp.Value.ToString()!)));
+            claims.AddRange(keyValuePairs!.Select(kvp => new Claim(kvp.Key, kvp.Value.ToString()!)));
             return claims;
         }
         private static byte[] ParseBase64WithoutPadding(string base64)
@@ -37,11 +37,6 @@ namespace Microsoft.Identity.Firebase.Models
                 case 3: base64 += "="; break;
             }
             return Convert.FromBase64String(base64);
-        }
-
-        public static async Task<AuthenticationState> GetAuthenticationStateAsyncStatic()
-        {
-            return await Task.FromResult(AuthenticationStateFromUser(FirebaseAuth.CurrentUser));
         }
 
         public static ClaimsIdentity ClaimsIdentityFromFirebaseUser(FirebaseUser user)
@@ -63,11 +58,6 @@ namespace Microsoft.Identity.Firebase.Models
             return new AuthenticationState(new ClaimsPrincipal(ClaimsIdentityFromFirebaseUser(user)));
         }
 
-        public override async Task<AuthenticationState> GetAuthenticationStateAsync()
-        {
-            return await GetAuthenticationStateAsyncStatic();
-        }
-
         public static void InvokeNotifyAuthenticationStateChanged()
         {
             Instance.ManageUser();
@@ -76,6 +66,11 @@ namespace Microsoft.Identity.Firebase.Models
         public void ManageUser()
         {
             NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
+        }
+
+        public override async Task<AuthenticationState> GetAuthenticationStateAsync()
+        {
+            return await Task.FromResult(AuthenticationStateFromUser(FirebaseAuth.CurrentUser));
         }
     }
 }

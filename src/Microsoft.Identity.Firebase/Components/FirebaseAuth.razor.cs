@@ -12,6 +12,8 @@ namespace Microsoft.Identity.Firebase.Components
     {
         [Inject] public static FirebaseProjectConfiguration? FirebaseConfiguration { get; private set; }
 
+        private static string? _currentFirebaseGuid = null;
+
         public static void SetFirebaseConfiguration(FirebaseProjectConfiguration configuration)
         {
             if (FirebaseConfiguration is null)
@@ -35,11 +37,14 @@ namespace Microsoft.Identity.Firebase.Components
 
         private static bool Initialized { get; set; } = false;
 
+        public static FirebaseAuth? Instance { get; private set; }
+
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             await base.OnAfterRenderAsync(firstRender);
             if (!Initialized && _jsRuntime is not null)
             {
+                Instance = this;
                 await _jsRuntime.InvokeVoidAsync("window.firebaseInitialize", DotNetObjectReference.Create(this));
                 Initialized = true;
             }
@@ -48,27 +53,28 @@ namespace Microsoft.Identity.Firebase.Components
         [JSInvokable]
         public async Task OnAuthStateChanged(FirebaseUser? user)
         {
+            bool changed = CurrentUser is null && user is not null || CurrentUser is not null && user is null;
+            bool changedUid = CurrentUser?.FirebaseUid != user?.FirebaseUid || _currentFirebaseGuid != user?.FirebaseUid;
             if (user == null)
             {
                 IsAuthenticated = false;
                 CurrentUser = null;
+                _currentFirebaseGuid = null;
             }
             else
             {
+                _currentFirebaseGuid = user.FirebaseUid;
                 CurrentUser = user;
             }
-            StateProvider.InvokeNotifyAuthenticationStateChanged();
+            if (changed || changedUid) { 
+               StateProvider.InvokeNotifyAuthenticationStateChanged();
+            }
         }
 
-        public static async Task<FirebaseUser?> CreateEmailUser(string email, string password, IJSRuntime? jsRuntime = null)
+        public static async Task<FirebaseUser> FirebaseUserFromJsonData(string userData)
         {
-            if (jsRuntime is not null)
-            {
-                StaticJsInterop = jsRuntime;
-            }
-            var userData = await StaticJsInterop!.InvokeAsync<string?>("window.firebaseCreateUser", email, password);
             if (string.IsNullOrEmpty(userData))
-                return null;
+                throw new ArgumentNullException(nameof(userData));
             var userDataBytes = userData.ToCharArray().Select(c => (byte)c).ToArray();
             var userDataStream = new MemoryStream(userDataBytes);
             var jsonSerializerOptions = new JsonSerializerOptions
@@ -83,9 +89,35 @@ namespace Microsoft.Identity.Firebase.Components
             var userObject = await JsonSerializer.DeserializeAsync<FirebaseUser>(
                 utf8Json: userDataStream,
                 options: jsonSerializerOptions);
+            if (userObject is null)
+                throw new InvalidOperationException("Unable to deserialize user data.");
             CurrentUser = userObject;
             StateProvider.InvokeNotifyAuthenticationStateChanged();
             return userObject;
+        }
+        
+        public static async Task<FirebaseUser?> SignInEmailUser(string email, string password, IJSRuntime? jsRuntime = null)
+        {
+            if (jsRuntime is not null)
+            {
+                StaticJsInterop = jsRuntime;
+            }
+            var userData = await StaticJsInterop!.InvokeAsync<string?>("window.firebaseLoginUser", email, password);
+            if (string.IsNullOrEmpty(userData))
+                return null;
+            return await FirebaseUserFromJsonData(userData);
+        }
+
+        public static async Task<FirebaseUser?> CreateEmailUser(string email, string password, IJSRuntime? jsRuntime = null)
+        {
+            if (jsRuntime is not null)
+            {
+                StaticJsInterop = jsRuntime;
+            }
+            var userData = await StaticJsInterop!.InvokeAsync<string?>("window.firebaseCreateUser", email, password);
+            if (string.IsNullOrEmpty(userData))
+                return null;
+            return await FirebaseUserFromJsonData(userData);
         }
 
         public static async Task<bool> UpdateEmailUserData(FirebaseUser user, IJSRuntime? jSRuntime = null)
@@ -103,7 +135,7 @@ namespace Microsoft.Identity.Firebase.Components
             return await StaticJsInterop!.InvokeAsync<bool>("window.firebaseUpdateProfile", user.FirstProvider);
         }
 
-        public async Task SignOut()
+        public async Task SignOutAsync()
         {
             await _jsRuntime!.InvokeVoidAsync("window.firebaseSignOut", DotNetObjectReference.Create(this));
         }
