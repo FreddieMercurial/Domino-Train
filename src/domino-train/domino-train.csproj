@@ -23,4 +23,8 @@
   <ItemGroup>
     <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
   </ItemGroup>
+
+	<Target Name="PreBuild" BeforeTargets="PreBuild">
+		<Copy SourceFiles="$(SolutionDir)src\firebase-js\dist\firebase-js-bundle.js" DestinationFolder="$(SolutionDir)\src\domino-train\wwwroot" />
+	</Target>
 </Project>

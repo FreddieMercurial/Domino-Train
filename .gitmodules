@@ -1,0 +1,8 @@
+[submodule "src/firebase-js"]
+	path = src/firebase-js
+	url = https://github.com/FreddieMercurial/BlazorWasmFirebaseAuthJs.git
+	branch = main
+[submodule "src/Microsoft.Identity.Firebase"]
+	path = src/Microsoft.Identity.Firebase
+	url = https://github.com/FreddieMercurial/BlazorWasmFirebaseAuth.git
+	branch = main
