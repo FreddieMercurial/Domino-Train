@@ -7,6 +7,10 @@ C# web multiplayer Domino Train (.Net 6 Blazor)
 * Firebase and Blazor playing nice
 * Reference project https://github.com/FreddieMercurial/Blazor-WASM-Firebase
 
+Starting to draw dominoes (with CSS!)
+
+  <img width="623" alt="Screen Shot 2022-05-19 at 1 48 18 PM" src="https://user-images.githubusercontent.com/3766240/169412837-8a608bee-f0af-4bf6-9a43-62fcb701ad7c.png">
+
 ## References
 ### blazor
 * https://code-maze.com/blazor-webassembly-authentication-aspnetcore-identity/
@@ -27,5 +31,6 @@ C# web multiplayer Domino Train (.Net 6 Blazor)
 * https://www.mexicantrainfun.com/mexican-train-rules/
 ### misc
 * https://www.c-sharpcorner.com/article/asp-net-core-blazor-simple-game-development-using-net-core-3-0-preview-web-api/?msclkid=10f31adacee811ec8c09f9cbd6eab264
+* https://codepen.io/Zeindelf/pen/qbKgVG
 
 Quite a few more!

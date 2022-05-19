@@ -11,10 +11,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="LibSassBuilder" Version="2.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.5" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.5" PrivateAssets="all" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="6.0.5" />
   </ItemGroup>
+	
+    <PropertyGroup>
+        <!-- outputstyle option -->
+        <LibSassOutputStyle>compressed</LibSassOutputStyle>
+        <LibSassOutputStyle Condition="'$(Configuration)' == 'Debug'">expanded</LibSassOutputStyle>
+        <!-- level option -->
+        <LibSassOutputLevel>verbose</LibSassOutputLevel>
+        <!-- msbuild output level -->
+        <LibSassMessageLevel>High</LibSassMessageLevel>
+    </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Microsoft.Identity.Firebase\Microsoft.Identity.Firebase.csproj" />
@@ -22,6 +33,13 @@
 
   <ItemGroup>
     <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <SassFile Update="Pages\Domino.razor.scss">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </SassFile>
   </ItemGroup>
 
 	<Target Name="PreBuild" BeforeTargets="PreBuild">

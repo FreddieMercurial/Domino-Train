@@ -1,0 +1,115 @@
+.row {
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  align-content: flex-start;
+  flex-wrap: wrap;
+  margin: 1rem;
+}
+
+.dot {
+  width: 23px;
+  height: 23px;
+  background: #111;
+  border-radius: 50%;
+  box-shadow: 2px 2px 10px #999 inset;
+}
+
+.dominoes-tile {
+  display: flex;
+  flex-direction: column;
+  margin-right: 1em;
+}
+
+.dominoes-tile__top, .dominoes-tile__bottom {
+  width: 100px;
+  height: 100px;
+  background: #eae3d3;
+  position: relative;
+  box-sizing: border-box;
+  padding: 10px;
+}
+
+.dominoes-tile__top:before, .dominoes-tile__bottom:before {
+  content: '';
+  display: block;
+  width: 80%;
+  height: 1px;
+  background: #111;
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+
+.dominoes-tile__top {
+  border-radius: 10px 10px 0 0;
+}
+
+.dominoes-tile__top:before {
+  bottom: 0;
+}
+
+.dominoes-tile__bottom {
+  border-radius: 0 0 10px 10px;
+}
+
+.dominoes-tile__bottom:before {
+  top: 0px;
+}
+
+.tile-1 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.tile-2 {
+  display: flex;
+  justify-content: space-between;
+}
+
+.tile-2 .dot:nth-child(2) {
+  align-self: flex-end;
+}
+
+.tile-3 {
+  display: flex;
+  justify-content: space-between;
+}
+
+.tile-3 .dot:nth-child(2) {
+  align-self: center;
+}
+
+.tile-3 .dot:nth-child(3) {
+  align-self: flex-end;
+}
+
+.tile-4,
+.tile-5 {
+  display: flex;
+  justify-content: space-between;
+}
+
+.tile-4 .column,
+.tile-5 .column {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.tile-5 .dot {
+  align-self: center;
+}
+
+.tile-6 {
+  display: flex;
+  justify-content: space-between;
+}
+
+.tile-6 .column {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
