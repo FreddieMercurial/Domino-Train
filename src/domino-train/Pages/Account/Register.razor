@@ -45,9 +45,7 @@
         loading = true;
         try
         {
-            var firebaseUser = await FirebaseAuth.CreateEmailUser(model.Email, model.Password, _jsRuntime);
-            firebaseUser!.FirstProvider!.DisplayName = model.DisplayName;
-            await FirebaseAuth.UpdateEmailUserData(firebaseUser);
+            var firebaseUser = await FirebaseAuth.CreateEmailUserAsync(model.Email, model.Password, model.DisplayName, _jsRuntime);
             NavigationManager.NavigateTo("account/login");
         }
         catch (Exception ex)

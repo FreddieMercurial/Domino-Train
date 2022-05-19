@@ -40,7 +40,7 @@
         loading = true;
         try
         {
-            var firebaseUser = await FirebaseAuth.SignInEmailUser(model.Email, model.Password, _jsRuntime);
+            var firebaseUser = await FirebaseAuth.SignInEmailUserAsync(model.Email, model.Password, _jsRuntime);
             NavigationManager.NavigateTo("/");
         }
         catch (Exception ex)
