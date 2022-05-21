@@ -30,11 +30,11 @@ public abstract class SetRules : ISetRules
 
     public RuleSetType RuleSetType { get; protected init; }
 
-    public string Name { get; protected init; }
-    public bool ChickenFeet { get; protected init; }
-    public bool BranchingDoubles { get; protected init; }
-    public bool CallItMayhem { get; protected init; }
-    public int DrawsToSatisfyOwnMayhem { get; protected init; }
+    public virtual string Name { get; protected init; } = "Default rules";
+    public virtual bool ChickenFeet { get; protected init; }
+    public virtual bool BranchingDoubles { get; protected init; }
+    public virtual bool CallItMayhem { get; protected init; }
+    public virtual int DrawsToSatisfyOwnMayhem { get; protected init; }
     public IEnumerable<int> PlayerCounts => this.PlayerCountToMaxDominoes.Keys;
     public int MaximumPlayers => this.PlayerCountToMaxDominoes.Keys.Max();
     public int MinimumPlayers => this.PlayerCountToMaxDominoes.Keys.Min();
@@ -58,5 +58,5 @@ public abstract class SetRules : ISetRules
                 SetSize: -1);
     }
 
-    public bool PlayOrderClockwise { get; private set; }
+    public virtual bool PlayOrderClockwise { get; protected init; }
 }

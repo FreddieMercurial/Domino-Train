@@ -1,0 +1,65 @@
+﻿@namespace DominoTrain.Components
+<div class="@ValueClassName">
+@switch(Value)
+{
+    case 0:
+        break;
+    case 1:
+        <div class="dot"></div>
+        break;
+    case 2:
+          <div class="dot"></div>
+          <div class="dot"></div>
+        break;
+    case 3:
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        break;
+    case 4:
+        <div class="column">
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+        <div class="column">
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+        break;
+    case 5:
+        <div class="column">
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+        <div class="dot"></div>
+        <div class="column">
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+        break;
+    case 6:
+        <div class="column">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+        <div class="column">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+        break;
+    default:
+        break;
+}
+</div>
+@code
+{
+    [Parameter]
+    public int Value { get; set; }
+
+    [Parameter]
+    public bool Top { get; set; }
+
+    public string ValueClassName =>  Value > 0 ? $"{DoubleSixDominoTile.ClassNameForValue(Top)} tile-{Value}" : DoubleSixDominoTile.ClassNameForValue(Top);
+}

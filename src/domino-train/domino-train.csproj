@@ -36,7 +36,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <SassFile Update="Pages\Domino.razor.scss">
+    <SassFile Update="Components\DoubleSixDominoTile.razor.scss">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </SassFile>
