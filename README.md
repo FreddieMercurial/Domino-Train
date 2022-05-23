@@ -32,5 +32,6 @@ Starting to draw dominoes (with CSS!)
 ### misc
 * https://www.c-sharpcorner.com/article/asp-net-core-blazor-simple-game-development-using-net-core-3-0-preview-web-api/?msclkid=10f31adacee811ec8c09f9cbd6eab264
 * https://codepen.io/Zeindelf/pen/qbKgVG
+* https://github.com/SharonBrizinov/DominoesReactJS
 
 Quite a few more!
