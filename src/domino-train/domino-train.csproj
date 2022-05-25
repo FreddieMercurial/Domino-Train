@@ -11,6 +11,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Components\DoubleSixDotContainer.razor.css" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Components\DoubleSixDotContainer.razor.css" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="LibSassBuilder" Version="2.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.5" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.5" PrivateAssets="all" />
@@ -33,13 +41,6 @@
 
   <ItemGroup>
     <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <SassFile Update="Components\DoubleSixDominoTile.razor.scss">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </SassFile>
   </ItemGroup>
 
 	<Target Name="PreBuild" BeforeTargets="PreBuild">

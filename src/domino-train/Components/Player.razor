@@ -1,0 +1,38 @@
+﻿<div class="player" data-id={this.state.id}>
+    <div class="details">
+        <span class="title">{this.state.name}</span>
+        <span class="score">{`Score: ${this.props.score}`}</span>
+        <span class="draws">{`Draws: ${this.props.drawsCount}`}</span>
+        <span class="avg-turn">{`Avg time: ${parseInt(avgTurnTimeSeconds)}`}</span>
+        <div class="avatar">
+        <img src={imgAvatar} draggable="false"/>
+        </div>
+        {!this.props.isGameEnded &&
+        <button class="get-tile" onClick={() => this.props.getTileFromBank()}
+                disabled={!this.props.isAllowedToGetMoreTiles}>
+        {`Get Tile`}
+        </button>}
+    </div>
+    <div class="hand-deck">
+        {
+        this.props.tiles.map(
+            (tile, index) =>
+            tile && !tile.used &&
+            <Tile
+                key={index}
+                index={index}
+                draggable
+                onTileStartDragging={this.props.onTileStartDragging}
+                rightSideNum={tile.rightSideNum}
+                leftSideNum={tile.leftSideNum}
+                direction={DIRECTIONS.vertical}
+                isVisible={tile.isVisible}
+            />
+        )
+        }
+    </div>
+</div>
+@code {
+    //let turnTimesSeconds = this.props.turnTimesSeconds;
+    //let avgTurnTimeSeconds = turnTimesSeconds.length === 0 ? 0 : turnTimesSeconds.reduce((a, b) => a + b, 0) / turnTimesSeconds.length;
+}

@@ -1,0 +1,46 @@
+﻿<PopUp Showing=false></PopUp>
+<div class="game" @onkeydown="OnKeyDown">
+    <GameDetails 
+        isViewMode={isActualViewMode}
+        gameState={currentStateToShow}
+        totalTurnCount={actualTurnCount}
+        shouldDisableBackward={shouldDisableBackward}
+        shouldDisableForward={shouldDisableForward}
+        goBackHistory={this.goBackHistory}
+        goForwardHistory={this.goForwardHistory}
+        resetGame={this.resetGame}
+        secondsElapsed={currentStateToShow.timer.secondsElapsed}
+        usedTiles={currentStateToShow.tilesOnBoard.length}/>
+    <Board
+        cells={currentStateToShow.cells}
+        onTileDropped={this.onTileDropped}
+        shouldGlow={isActualGameEnded}/>
+    @{
+        var players = new Models.Players.Player[] { };
+    }
+    @for (var i = 0; i < players.Length;i++)
+    {
+        var player = players[i];
+        <Player 
+            key={`player-${i}`}
+            name=@{player.Name} id={i}
+            tiles={player.tiles}
+            @onTileStartDragging="OnTileDragEnter"
+            score={player.score}
+            getTileFromBank={this.getTileFromBank}
+            drawsCount={player.drawsCount}
+            turnTimesSeconds={player.turnTimesSeconds}
+            isGameEnded={this.state.isGameEnded}
+            isAllowedToGetMoreTiles={this.isAllowedToGetMoreTiles(player)}/>
+    }
+</div>
+@code {
+    public void OnTileDragEnter(DragEventArgs e)
+    {
+    
+    }
+    public void OnKeyDown(KeyboardEventArgs e)
+    {
+        
+    }
+}

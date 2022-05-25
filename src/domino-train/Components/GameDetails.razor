@@ -1,0 +1,42 @@
+﻿<div class="game-details">
+    <div class="mode-status">
+        {this.props.isViewMode ? `View Mode` : `Game Mode`}
+    </div>
+    <div class="game-moves">
+        {`Moves: ${this.props.gameState.turnCount}/${this.props.totalTurnCount}`}
+    </div>
+    <div class="tiles-on-board">
+        {`Tiles: ${this.props.usedTiles}/28`}
+    </div>
+    <div class="emptyDiv"/>
+    <button class="history-back" onClick={() => this.props.goBackHistory()}
+            disabled={this.props.shouldDisableBackward}>
+        {this.props.isViewMode ? `Previous` : `Undo`}
+    </button>
+    <button class="history-forward" onClick={() => this.props.goForwardHistory()}
+            disabled={this.props.shouldDisableForward}
+            style={{visibility: this.props.isViewMode ? 'visible'  : 'hidden'}}>
+        {`Next`}
+    </button>
+    <div class="game-reset">
+        <button class="game-reset-btn" onClick={() => this.props.resetGame()}>
+        {this.props.isViewMode ? `New Game` : `Reset Game`}
+        </button>
+    </div>
+    <div class="emptyDiv"/>
+    <Timer secondsElapsed={this.props.secondsElapsed}/>
+</div>
+@code {
+    /*
+        isViewMode={isActualViewMode}
+        gameState={currentStateToShow}
+        totalTurnCount={actualTurnCount}
+        shouldDisableBackward={shouldDisableBackward}
+        shouldDisableForward={shouldDisableForward}
+        goBackHistory={this.goBackHistory}
+        goForwardHistory={this.goForwardHistory}
+        resetGame={this.resetGame}
+        secondsElapsed={currentStateToShow.timer.secondsElapsed}
+        usedTiles={currentStateToShow.tilesOnBoard.length}
+     */
+}

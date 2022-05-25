@@ -1,0 +1,75 @@
+﻿.player {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    height: 140px;
+    background-color: rgb(151, 178, 205);
+    border-radius: 15px 15px 0 0;
+    font-size: 17px;
+    display: flex;
+    align-items: flex-end;
+    padding: 8px 8px 25px 8px;
+    transform: translate(-50%, 0);
+}
+
+.title {
+    font-weight: bold;
+}
+
+.player .hand-deck {
+    height: 110%;
+    width: 450px;
+    display: flex;
+    overflow-x: scroll;
+}
+
+    .player .hand-deck::-webkit-scrollbar {
+        -webkit-appearance: none;
+    }
+
+        .player .hand-deck::-webkit-scrollbar:vertical {
+            width: 11px;
+        }
+
+        .player .hand-deck::-webkit-scrollbar:horizontal {
+            height: 11px;
+        }
+
+    .player .hand-deck::-webkit-scrollbar-thumb {
+        border-radius: 8px;
+        border: 2px solid black; /* should match background, can't be transparent */
+        background-color: rgba(0, 0, 0, .5);
+    }
+
+    .player .hand-deck .tile {
+        margin: 0 2px 0 2px;
+        cursor: pointer;
+    }
+
+.player .details {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    height: 100%;
+    width: 100px;
+    margin-right: 10px;
+    font-size: 17px;
+    text-align: center;
+}
+
+.player .avatar {
+    vertical-align: middle;
+    width: 100%;
+    height: 50px;
+    border-radius: 50%;
+    text-align: center;
+}
+
+    .player .avatar img {
+        width: 50px;
+        height: 50px;
+    }
+
+.player .hand-deck .tile:hover {
+    transform: scale(1.1);
+}

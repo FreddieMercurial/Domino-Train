@@ -44,7 +44,7 @@
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         var user = authState.User;
 
-        if (user.Identity.IsAuthenticated)
+        if (user is not null && user.Identity is not null && user.Identity.IsAuthenticated)
         {
             authMessage = $"{user.Identity.Name} is authenticated.";
             claims = user.Claims;
@@ -62,7 +62,7 @@
         var authState = await authenticationStateTask;
         var user = authState.User;
 
-        if (user.Identity.IsAuthenticated)
+        if (user is not null && user.Identity is not null && user.Identity.IsAuthenticated)
         {
             authMessage = $"{user.Identity.Name} is authenticated.";
         }

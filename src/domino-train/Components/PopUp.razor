@@ -1,0 +1,30 @@
+﻿@if (Showing)
+{
+    <div class="overlay">
+        <div class="popup-wrapper">
+            <div class="popup-header">
+                <h3>Dominoes Notification</h3>
+                <span class="close-popup-btn" @onclick="closeClick">x</span>
+            </div>
+            <div class="popup-body">
+                @foreach (var popup in popups)
+                {
+                    <p> @popup </p>
+                }
+            </div>
+        </div>
+    </div>
+}
+@code {
+    [Parameter]
+    public static bool Showing { get; set; } = false;
+    public static readonly List<string> popups = new List<string>();
+    public static void AddPopUp(string message)
+    {
+        popups.Add(message);
+    }
+    public void closeClick()
+    {
+        Showing = false;
+    }
+}

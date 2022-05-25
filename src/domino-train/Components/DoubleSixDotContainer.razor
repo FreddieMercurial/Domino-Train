@@ -1,0 +1,34 @@
+﻿<div class="dot-container" dots-number="@Dots">
+@for(var i=0;i<Dots;i++)
+{
+    <div key="@i" dot-index="@i" class="dot"/>
+}
+</div>
+@code {
+    public const int MAX_DOTS = 9;
+
+    private int _dots;
+    [Parameter]
+    public int Dots
+    {
+        get => _dots;
+        set
+        {
+            if (value < 0 || value > MAX_DOTS)
+                throw new ArgumentOutOfRangeException(nameof(value));
+            _dots = value;
+        }
+    }
+
+    /*
+    Number: 3
+    Indices: 0, 4, 8
+    -------------
+    | X |   |   |
+    -------------
+    |   | X |   |
+    -------------
+    |   |   | X |
+    -------------
+    */
+}

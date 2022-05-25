@@ -1,0 +1,9 @@
+﻿<div class="timer">
+    <p>@gameTime.TotalMinutes:@gameTime.TotalSeconds</p>
+</div>
+@code {
+    [Parameter]
+    public DateTime gameClock { get; set; }
+
+    public TimeSpan gameTime => DateTime.Now.Subtract(gameClock);
+}
