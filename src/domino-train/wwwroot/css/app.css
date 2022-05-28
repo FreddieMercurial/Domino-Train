@@ -132,13 +132,6 @@ body {
     }
 }
 /* domino game */
-div.game {
-    width: 100%;
-    height: 100%;
-    background-image: url('/images/casino_bg_2.jpg');
-    overflow-x: hidden;
-    overflow-y: hidden;
-}
 
 button {
     font-size: 12px;
