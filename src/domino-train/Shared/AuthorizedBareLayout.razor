@@ -4,12 +4,9 @@
 @inherits LayoutComponentBase
 @inject NavigationManager Navigation
 @inject SignOutSessionStateManager SignOutManager
-
 <AuthorizeView>
     <Authorized>
-    <main>
-        @Body
-    </main>
+    @Body
     </Authorized>
 </AuthorizeView>
 <FirebaseAuth />

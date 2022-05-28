@@ -10,39 +10,39 @@
     opacity: 0.0;
 }
 
-    .tile hr {
-        border: 1px solid black;
-        margin: 1px;
-        padding: 0;
-        border-radius: 1px;
-    }
+.tile hr {
+    border: 1px solid black;
+    margin: 1px;
+    padding: 0;
+    border-radius: 1px;
+}
 
-    .tile[direction="vertical"] {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        width: 50px;
-        height: 100px;
-    }
+.tile[direction="vertical"] {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 50px;
+    height: 100px;
+}
 
-    .tile[direction="horizontal"] {
-        display: flex;
-        justify-content: center;
-        width: 100px;
-        height: 50px;
-    }
+.tile[direction="horizontal"] {
+    display: flex;
+    justify-content: center;
+    width: 100px;
+    height: 50px;
+}
 
-    .tile[glow="true"] {
-        box-shadow: 0 0 50px rgb(212, 216, 0);
-    }
+.tile[glow="true"] {
+    box-shadow: 0 0 50px rgb(212, 216, 0);
+}
 
-    .tile[visible="true"] {
-        opacity: 1;
-        animation-name: fadeInOpacity;
-        animation-iteration-count: 1;
-        animation-timing-function: ease-in;
-        animation-duration: .3s;
-    }
+.tile[visible="true"] {
+    opacity: 1;
+    animation-name: fadeInOpacity;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-in;
+    animation-duration: .3s;
+}
 
 @keyframes fadeInOpacity {
     0% {
