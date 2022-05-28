@@ -1,8 +1,7 @@
-using DominoTrain.Enumerations;
 using DominoTrain.Interfaces;
 using DominoTrain.Models.Rules;
 
-namespace DominoTrain.Models;
+namespace DominoTrain.Enumerations;
 
 public static class RuleSetTypeMap
 {
@@ -25,6 +24,11 @@ public static class RuleSetTypeMap
             default:
                 throw new Exception(message: "Unknown rule set type");
         }
+    }
+
+    public static ISetRules ToSetRules(this RuleSetType ruleSetType)
+    {
+        return GetRules(ruleSetType);
     }
 
     public static RuleSetType GetRuleSetType(ISetRules setRules)

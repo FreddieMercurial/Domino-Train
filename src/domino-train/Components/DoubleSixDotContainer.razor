@@ -1,7 +1,7 @@
 ﻿<div class="dot-container" dots-number="@Dots">
-@for(var i=0;i<Dots;i++)
+@for(var i=0;i<MAX_DOTS;i++)
 {
-    <div key="@i" dot-index="@i" class="dot"/>
+    <div key="@i" dot-index="@i" dots-number="@Dots" class="dot"/>
 }
 </div>
 @code {
