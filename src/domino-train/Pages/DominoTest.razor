@@ -1,4 +1,5 @@
 ﻿@page "/domino"
+@using DominoTrain.Enumerations
 @layout BareLayout
 <PageTitle>Domino Test</PageTitle>
 <div class="game">
@@ -58,13 +59,13 @@
                 <span class="draws">Draws: 4</span>
                 <span class="avg-turn">Avg time: 1m23s</span>
                 <div class="avatar">
-                <img src="=imgAvatar=" draggable="false"/>
+                <img src="images/hipster.png" draggable="false"/>
                 </div>
                 <button class="get-tile"></button>
             </div>
             <div class="hand-deck">
-                <DoubleSixTile TopValue="0" BottomValue="0" Visible="true" Draggable="true" />
-                <DoubleSixTile TopValue="6" BottomValue="6" Visible="true" Draggable="true" />
+                <DoubleSixTile TopValue="0" BottomValue="0" Visible="true" Draggable="true" Direction="@TileDirection.Vertical" />
+                <DoubleSixTile TopValue="6" BottomValue="6" Visible="true" Draggable="true" Direction="@TileDirection.Vertical" />
             </div>
         </div>
     </div>
