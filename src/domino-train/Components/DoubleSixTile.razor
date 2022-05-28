@@ -1,0 +1,62 @@
+﻿@using DominoTrain.Enumerations
+<div
+    aba="@TileIndex"
+    class="tile"
+    direction="@enumString(Direction)"
+    glow="@boolString(Glow)"
+    visible="@boolString(Visible)"
+    @onmousedown="OnMouseDown"
+    draggable="@boolString(Draggable)"
+>
+    <DoubleSixDotContainer Dots="@TopValue"/>
+    <hr/>
+    <DoubleSixDotContainer Dots="@BottomValue"/>
+</div>
+@code {
+    private Domino? _domino;
+    [Parameter]
+    public Domino? Domino {
+        get => _domino;
+        set
+        {
+            this._domino = value;
+            if (value is not null)
+            {
+                this.TopValue = value.Value1;
+                this.BottomValue = value.Value2;
+            }
+        }
+    }
+    
+    private static string boolString(bool value) => Convert.ToString(value).ToLowerInvariant();
+    private static string enumString(Enum e) => e.ToString().ToLowerInvariant();
+
+    [Parameter]
+    public int TileIndex { get; set; }
+
+    [Parameter]
+    public int TopValue { get; set; }
+    
+    [Parameter]
+    public int BottomValue { get; set; }
+    
+    [Parameter]
+    public bool Draggable { get; set; }
+    
+    [Parameter]
+    public bool Glow { get; set; }
+    
+    [Parameter]
+    public bool Visible { get; set; }
+    
+    [Parameter]
+    public TileDirection Direction { get; set; }
+    public void OnMouseDown(MouseEventArgs e)
+    {
+        /*
+         * {() => {
+            draggable && onTileStartDragging({rightSideNum, leftSideNum, index});
+            }}
+         */
+    }
+}

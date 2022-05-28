@@ -11,14 +11,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Components\DoubleSixDotContainer.razor.css" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="Components\DoubleSixDotContainer.razor.css" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="LibSassBuilder" Version="2.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.5" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.5" PrivateAssets="all" />
