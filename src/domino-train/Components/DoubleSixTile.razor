@@ -27,7 +27,7 @@
             }
         }
     }
-    
+
     private static string boolString(bool value) => Convert.ToString(value).ToLowerInvariant();
     private static string enumString(Enum e) => e.ToString().ToLowerInvariant();
 
@@ -36,19 +36,19 @@
 
     [Parameter]
     public int TopValue { get; set; }
-    
+
     [Parameter]
     public int BottomValue { get; set; }
-    
+
     [Parameter]
     public bool Draggable { get; set; }
-    
+
     [Parameter]
     public bool Glow { get; set; }
-    
+
     [Parameter]
-    public bool Visible { get; set; }
-    
+    public bool Visible { get; set; } = true;
+
     [Parameter]
     public TileDirection Direction { get; set; }
     public void OnMouseDown(MouseEventArgs e)

@@ -1,11 +1,23 @@
 ﻿@page "/domino"
 @layout BareLayout
 <PageTitle>Domino Test</PageTitle>
-<!-- Game  /-->
-<hr />
-<h1>[0|0]</h1>
-<DoubleSixTile TopValue="0" BottomValue="0" />
-<hr/>
-<h1>[6|6]</h1>
-<DoubleSixTile TopValue="6" BottomValue="6" />
-<hr />
+<div class="game">
+    <div class="board">
+        <div class="player" data-id="@Guid.NewGuid()">
+            <div class="details">
+                <span class="title"></span>
+                <span class="score">Score: 123</span>
+                <span class="draws">Draws: 2</span>
+                <span class="avg-turn">Avg time: 1m23s</span>
+                <div class="avatar">
+                <img src="=imgAvatar=" draggable="false"/>
+                </div>
+                <button class="get-tile"></button>
+            </div>
+            <div class="hand-deck">
+                <DoubleSixTile TopValue="0" BottomValue="0" />
+                <DoubleSixTile TopValue="6" BottomValue="6" />
+            </div>
+        </div>
+    </div>
+</div>
