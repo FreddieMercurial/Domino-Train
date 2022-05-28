@@ -1,10 +1,12 @@
 ﻿@using DominoTrain.Enumerations
-<div aba="@TileIndex" class="tile"
-        direction=@direction
-        glow=@boolString(glow)
-        visible=@boolString(visible)
-        @onMouseDown="OnMouseDown"
-        draggable=@draggable
+<div
+    aba="@TileIndex"
+    class="tile"
+    direction="@Direction"
+    glow="@boolString(Glow)"
+    visible="@boolString(Visible)"
+    @onmousedown="OnMouseDown"
+    draggable="@Draggable"
 >
     <DoubleSixDotContainer Dots="@TopValue"/>
     <hr/>
@@ -12,27 +14,39 @@
 </div>
 @code {
     private Domino? _domino;
-    public void FromDomino(Domino domino)
-    {
-        this._domino = domino;
-        TopValue = this._domino.Value1;
-        BottomValue = this._domino.Value2;
+    [Parameter]
+    public Domino? Domino {
+        get => _domino;
+        set
+        {
+            this._domino = value;
+            this.TopValue = value.Value1;
+            this.BottomValue = value.Value2;
+        }
     }
+    
     private static string boolString(bool value) => Convert.ToString(value);
+    
     [Parameter]
     public int TileIndex { get; set; }
+
     [Parameter]
     public int TopValue { get; set; }
+    
     [Parameter]
     public int BottomValue { get; set; }
+    
     [Parameter]
-    public bool draggable { get; set; }
+    public bool Draggable { get; set; }
+    
     [Parameter]
-    public bool glow { get; set; }
+    public bool Glow { get; set; }
+    
     [Parameter]
-    public bool visible = { get; set; }
+    public bool Visible { get; set; }
+    
     [Parameter]
-    public TileDirection direction { get; set; }
+    public TileDirection Direction { get; set; }
     public void OnMouseDown(MouseEventArgs e)
     {
         /*

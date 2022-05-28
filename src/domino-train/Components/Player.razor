@@ -5,20 +5,16 @@
         <span class="draws">{`Draws: ${this.props.drawsCount}`}</span>
         <span class="avg-turn">{`Avg time: ${parseInt(avgTurnTimeSeconds)}`}</span>
         <div class="avatar">
-        <img src={imgAvatar} draggable="false"/>
+        <img src="=imgAvatar=" draggable="false"/>
         </div>
-        {!this.props.isGameEnded &&
-        <button class="get-tile" onClick={() => this.props.getTileFromBank()}
-                disabled={!this.props.isAllowedToGetMoreTiles}>
-        {`Get Tile`}
-        </button>}
+        =!this.props.isGameEnded &&
+        -button class="get-tile" onClick={() => this.props.getTileFromBank()}
+                disabled={!this.props.isAllowedToGetMoreTiles}-
+        =`Get Tile`=
+        -/button-=
     </div>
     <div class="hand-deck">
-        {
-        this.props.tiles.map(
-            (tile, index) =>
-            tile && !tile.used &&
-            <Tile
+            <!-- DoubleSixTile
                 key={index}
                 index={index}
                 draggable
@@ -27,9 +23,7 @@
                 leftSideNum={tile.leftSideNum}
                 direction={DIRECTIONS.vertical}
                 isVisible={tile.isVisible}
-            />
-        )
-        }
+            / -->
     </div>
 </div>
 @code {
