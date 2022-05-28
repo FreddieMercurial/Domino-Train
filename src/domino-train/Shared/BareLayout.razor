@@ -1,0 +1,22 @@
+﻿@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using Microsoft.Identity.Firebase.Models
+@inherits LayoutComponentBase
+@inject NavigationManager Navigation
+@inject SignOutSessionStateManager SignOutManager
+
+<AuthorizeView>
+    <Authorized>
+    <main>
+        <div class="top-row px-4 auth">
+            <LoginDisplay />
+            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
+        </div>
+
+        <article class="content px-4">
+            @Body
+        </article>
+    </main>
+    </Authorized>
+</AuthorizeView>
+<FirebaseAuth />
