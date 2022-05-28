@@ -2,12 +2,60 @@
 @layout BareLayout
 <PageTitle>Domino Test</PageTitle>
 <div class="game">
+    <div class="game-details">
+        <div class="mode-status">
+            @if(false)
+            {
+                <span>View Mode</span>
+            }
+            else
+            {
+                <spean>Game Mode</spean>
+            }
+        </div>
+        <div class="game-moves">
+            Moves: 2
+        </div>
+        <div class="tiles-on-board">
+            Tiles: 3
+        </div>
+        <div class="emptyDiv"/>
+        <button class="history-back">
+            @if(false)
+            {
+                <span>Previous</span>
+            }
+            else
+            {
+                <spean>Undo</spean>
+            }
+        </button>
+        <button class="history-forward">
+            Next
+        </button>
+        <div class="game-reset">
+            <button class="game-reset-btn">
+            @if(false)
+            {
+                <span>New Game</span>
+            }
+            else
+            {
+                <spean>Reset Game</spean>
+            }
+            </button>
+        </div>
+        <div class="emptyDiv"/>
+        <div class="timer">
+            <p>1:23</p>
+        </div>
+    </div>
     <div class="board">
         <div class="player" data-id="@Guid.NewGuid()">
             <div class="details">
                 <span class="title"></span>
                 <span class="score">Score: 123</span>
-                <span class="draws">Draws: 2</span>
+                <span class="draws">Draws: 4</span>
                 <span class="avg-turn">Avg time: 1m23s</span>
                 <div class="avatar">
                 <img src="=imgAvatar=" draggable="false"/>
@@ -15,8 +63,8 @@
                 <button class="get-tile"></button>
             </div>
             <div class="hand-deck">
-                <DoubleSixTile TopValue="0" BottomValue="0" />
-                <DoubleSixTile TopValue="6" BottomValue="6" />
+                <DoubleSixTile TopValue="0" BottomValue="0" Visible="true" Draggable="true" />
+                <DoubleSixTile TopValue="6" BottomValue="6" Visible="true" Draggable="true" />
             </div>
         </div>
     </div>
