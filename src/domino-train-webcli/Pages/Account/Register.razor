@@ -1,0 +1,57 @@
+﻿@page "/account/register"
+@using Microsoft.Identity.Firebase.Models
+@using Microsoft.Identity.Firebase.Models.Account
+@inject NavigationManager NavigationManager
+@inject IJSRuntime _jsRuntime
+
+<div class="card">
+    <h4 class="card-header">Register</h4>
+    <div class="card-body">
+        <EditForm Model="@model" OnValidSubmit="OnValidSubmit">
+            <DataAnnotationsValidator />
+            <div class="form-group">
+                <label>Display Name</label>
+                <InputText @bind-Value="model.DisplayName" class="form-control" />
+                <ValidationMessage For="@(() => model.DisplayName)" />
+            </div>
+            <div class="form-group">
+                <label>Email</label>
+                <InputText @bind-Value="model.Email" class="form-control" />
+                <ValidationMessage For="@(() => model.Email)" />
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <InputText @bind-Value="model.Password" type="password" class="form-control" />
+                <ValidationMessage For="@(() => model.Password)" />
+            </div>
+            <button disabled="@loading" class="btn btn-primary">
+                @if (loading) 
+                {
+                    <span class="spinner-border spinner-border-sm mr-1"></span>
+                }
+                Register
+            </button>
+            <NavLink href="account/login" class="btn btn-link">Cancel</NavLink>
+        </EditForm>
+    </div>
+</div>
+
+@code {
+    private NewUser model = new NewUser();
+    private bool loading;
+
+    private async void OnValidSubmit()
+    {
+        loading = true;
+        try
+        {
+            var firebaseUser = await FirebaseAuth.CreateEmailUserAsync(model.Email, model.Password, model.DisplayName, _jsRuntime);
+            NavigationManager.NavigateTo("account/login");
+        }
+        catch (Exception ex)
+        {
+            loading = false;
+            StateHasChanged();
+        }
+    }
+}

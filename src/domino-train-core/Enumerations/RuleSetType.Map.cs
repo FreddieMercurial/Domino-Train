@@ -1,6 +1,5 @@
 using DominoTrain.Core.Interfaces;
 using DominoTrain.Core.Models.Rules;
-using DominoTrain.Models.Rules;
 
 namespace DominoTrain.Core.Enumerations;
 

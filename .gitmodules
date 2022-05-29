@@ -6,3 +6,7 @@
 	path = src/Microsoft.Identity.Firebase
 	url = https://github.com/FreddieMercurial/BlazorWasmFirebaseAuth.git
 	branch = main
+[submodule "src/HACC"]
+	path = src/HACC
+	url = https://github.com/Blazor-Console/HACC.git
+	branch = main

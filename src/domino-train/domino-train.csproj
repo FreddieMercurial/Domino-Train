@@ -28,7 +28,7 @@
     </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\domino-train-webcli\src\domino-train-core\DominoTrain.Core.csproj" />
+    <ProjectReference Include="..\domino-train-core\DominoTrain.Core.csproj" />
     <ProjectReference Include="..\Microsoft.Identity.Firebase\Microsoft.Identity.Firebase.csproj" />
   </ItemGroup>
 

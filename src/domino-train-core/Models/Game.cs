@@ -1,7 +1,6 @@
 ﻿using DominoTrain.Core.Interfaces;
 using DominoTrain.Core.Models.Players;
-using DominoTrain.Models;
-using DominoTrain.Models.Rules;
+using DominoTrain.Core.Models.Rules;
 using System.Runtime.Serialization;
 
 namespace DominoTrain.Core.Models;

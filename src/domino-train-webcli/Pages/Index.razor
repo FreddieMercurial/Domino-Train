@@ -1,0 +1,8 @@
+@page "/"
+@namespace DominoTrain.WebCli.Pages
+@using HACC.Components;
+
+<PageTitle>Console Demo</PageTitle>
+
+<h1>Console Demo</h1>
+<WebConsole @ref="@_webConsole" OnLoaded="@InitApp"></WebConsole>
