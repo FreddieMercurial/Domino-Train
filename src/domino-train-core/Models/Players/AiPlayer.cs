@@ -1,4 +1,6 @@
-namespace DominoTrain.Models.Players;
+using DominoTrain.Core.Models;
+
+namespace DominoTrain.Core.Models.Players;
 
 public class AiPlayer : Player
 {

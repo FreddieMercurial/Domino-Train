@@ -1,9 +1,10 @@
-﻿using DominoTrain.Interfaces;
-using DominoTrain.Models.Players;
+﻿using DominoTrain.Core.Interfaces;
+using DominoTrain.Core.Models.Players;
+using DominoTrain.Models;
 using DominoTrain.Models.Rules;
 using System.Runtime.Serialization;
 
-namespace DominoTrain.Models;
+namespace DominoTrain.Core.Models;
 
 [Serializable]
 [DataContract]

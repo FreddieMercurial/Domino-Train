@@ -1,12 +1,12 @@
-using DominoTrain.Enumerations;
-using DominoTrain.Interfaces;
+using DominoTrain.Core.Enumerations;
+using DominoTrain.Core.Interfaces;
 using System.Collections.Immutable;
 
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable MemberCanBeProtected.Global
 // ReSharper disable InconsistentNaming
 
-namespace DominoTrain.Models.Rules;
+namespace DominoTrain.Core.Models.Rules;
 
 public abstract class SetRules : ISetRules
 {

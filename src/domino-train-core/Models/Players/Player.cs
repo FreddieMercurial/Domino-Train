@@ -1,7 +1,7 @@
 ﻿using System.Collections.Immutable;
 using System.Runtime.Serialization;
 
-namespace DominoTrain.Models.Players;
+namespace DominoTrain.Core.Models.Players;
 
 [Serializable]
 [DataContract]

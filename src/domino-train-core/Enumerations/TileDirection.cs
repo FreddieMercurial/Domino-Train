@@ -1,4 +1,4 @@
-﻿namespace DominoTrain.Enumerations
+﻿namespace DominoTrain.Core.Enumerations
 {
     public enum TileDirection
     {

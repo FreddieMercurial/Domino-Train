@@ -1,6 +1,6 @@
 using System.Runtime.Serialization;
 
-namespace DominoTrain.Models;
+namespace DominoTrain.Core.Models;
 
 [Serializable]
 [DataContract]

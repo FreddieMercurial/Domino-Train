@@ -1,4 +1,4 @@
-﻿namespace DominoTrain.Models;
+﻿namespace DominoTrain.Core.Models;
 
 internal class Constants
 {

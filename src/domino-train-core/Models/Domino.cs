@@ -1,7 +1,7 @@
-﻿using DominoTrain.Models.Players;
+﻿using DominoTrain.Core.Models.Players;
 using System.Runtime.Serialization;
 
-namespace DominoTrain.Models;
+namespace DominoTrain.Core.Models;
 
 [Serializable]
 [DataContract]
@@ -147,8 +147,8 @@ public class Domino
         if (this.DominoSetId != domino.DominoSetId)
             return false;
 
-        return (this.Value1 == domino.Value1 && this.Value2 == domino.Value2) ||
-               (this.Value2 == domino.Value1 && this.Value1 == domino.Value2);
+        return this.Value1 == domino.Value1 && this.Value2 == domino.Value2 ||
+               this.Value2 == domino.Value1 && this.Value1 == domino.Value2;
     }
 
     public override int GetHashCode()

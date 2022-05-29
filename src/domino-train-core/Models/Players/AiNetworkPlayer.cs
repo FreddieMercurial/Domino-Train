@@ -1,4 +1,4 @@
-namespace DominoTrain.Models.Players;
+namespace DominoTrain.Core.Models.Players;
 
 public sealed class AiNetworkPlayer : Player
 {

@@ -1,10 +1,10 @@
-using DominoTrain.Enumerations;
-using DominoTrain.Interfaces;
+using DominoTrain.Core.Enumerations;
+using DominoTrain.Core.Interfaces;
 using System.Collections.Immutable;
 
 // ReSharper disable MemberCanBePrivate.Global
 
-namespace DominoTrain.Models.Rules;
+namespace DominoTrain.Core.Models.Rules;
 
 /// <summary>
 ///     https://www.thesprucecrafts.com/mexican-train-dominoes-complete-rules-410911

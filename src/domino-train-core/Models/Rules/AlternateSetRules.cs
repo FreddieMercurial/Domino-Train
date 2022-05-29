@@ -1,43 +1,47 @@
-using DominoTrain.Enumerations;
-using DominoTrain.Interfaces;
+using DominoTrain.Core.Enumerations;
+using DominoTrain.Core.Interfaces;
+using DominoTrain.Core.Models;
 using System.Collections.Immutable;
 
 // ReSharper disable MemberCanBePrivate.Global
 
-namespace DominoTrain.Models.Rules;
+namespace DominoTrain.Core.Models.Rules;
 
 /// <summary>
-///     Deborah's community center rules
+///     https://www.mexicantrainfun.com/questions-answers/
 /// </summary>
-public class CommunityCenterSetRules : SetRules, ISetRules
+public class AlternateSetRules : SetRules, ISetRules
 {
-    public CommunityCenterSetRules()
+    public AlternateSetRules()
     {
-        this.Name = "Community Center Rules";
+        this.Name = "Alternate Rules";
         this.ChickenFeet = false;
-        this.CallItMayhem = true;
-        this.DrawsToSatisfyOwnMayhem = 0;
-        this.RuleSetType = RuleSetType.CommunityCenter;
+        this.CallItMayhem = false;
+        this.DrawsToSatisfyOwnMayhem = -1;
+        this.RuleSetType = RuleSetType.Alternate;
         this._playerCountToMaxDominoes =
             new Dictionary<int, SetInfo>
             {
-                // For 2 to 3 players, use a double-9 (9-9) set; each player takes eight dominoes.
+                // Double-Nine
+                // For 2 to 4 players, use a double-9 (9-9) set.
                 {
                     2, new SetInfo(HighTile: 9,
-                        DrawCount: 8,
+                        DrawCount: 12,
                         SetSize: this.SetSizesByHighTile[key: 9])
                 },
                 {
                     3, new SetInfo(HighTile: 9,
-                        DrawCount: 8,
+                        DrawCount: 11,
                         SetSize: this.SetSizesByHighTile[key: 9])
                 },
-                // For 4 to 6 players, use a double-12( 12-12) set; each player takes 12 dominoes.
                 {
-                    4, new SetInfo(HighTile: 12,
-                        DrawCount: 12,
-                        SetSize: this.SetSizesByHighTile[key: 12])
+                    4, new SetInfo(HighTile: 9,
+                        DrawCount: 10,
+                        SetSize: this.SetSizesByHighTile[key: 9])
                 },
+
+                // Double-Twelve
+                // For 5 to 8 players, use a double-12( 12-12) set.
                 {
                     5, new SetInfo(HighTile: 12,
                         DrawCount: 12,
@@ -45,10 +49,9 @@ public class CommunityCenterSetRules : SetRules, ISetRules
                 },
                 {
                     6, new SetInfo(HighTile: 12,
-                        DrawCount: 12,
+                        DrawCount: 11,
                         SetSize: this.SetSizesByHighTile[key: 12])
                 },
-                // For 7 to 8 players, use a double-12 (12-12) set; each player takes 10 dominoes.
                 {
                     7, new SetInfo(HighTile: 12,
                         DrawCount: 10,
@@ -56,13 +59,15 @@ public class CommunityCenterSetRules : SetRules, ISetRules
                 },
                 {
                     8, new SetInfo(HighTile: 12,
-                        DrawCount: 10,
+                        DrawCount: 9,
                         SetSize: this.SetSizesByHighTile[key: 12])
                 },
-                // For 9 to12 players, use a double-15 (15-15) set; each player takes 11 dominoes.
+
+                // Double-Fifteen
+                // For 9 to 12 players, use a double-15 (15-15) set.
                 {
                     9, new SetInfo(HighTile: 15,
-                        DrawCount: 11,
+                        DrawCount: 12,
                         SetSize: this.SetSizesByHighTile[key: 15])
                 },
                 {
@@ -72,23 +77,35 @@ public class CommunityCenterSetRules : SetRules, ISetRules
                 },
                 {
                     11, new SetInfo(HighTile: 15,
-                        DrawCount: 11,
+                        DrawCount: 10,
                         SetSize: this.SetSizesByHighTile[key: 15])
                 },
                 {
                     12, new SetInfo(HighTile: 15,
-                        DrawCount: 11,
+                        DrawCount: 9,
                         SetSize: this.SetSizesByHighTile[key: 15])
                 },
-                // For 13 to 14 players, use a double-18 (18-18) set; each player takes 11 dominoes.
+
+                // Double-Eighteen
+                // For 13 to 16 players, use a double-18 (18-18) set.
                 {
                     13, new SetInfo(HighTile: 18,
-                        DrawCount: 11,
+                        DrawCount: 12,
                         SetSize: this.SetSizesByHighTile[key: 18])
                 },
                 {
                     14, new SetInfo(HighTile: 18,
                         DrawCount: 11,
+                        SetSize: this.SetSizesByHighTile[key: 18])
+                },
+                {
+                    15, new SetInfo(HighTile: 18,
+                        DrawCount: 10,
+                        SetSize: this.SetSizesByHighTile[key: 18])
+                },
+                {
+                    16, new SetInfo(HighTile: 18,
+                        DrawCount: 9,
                         SetSize: this.SetSizesByHighTile[key: 18])
                 },
             }.ToImmutableDictionary();

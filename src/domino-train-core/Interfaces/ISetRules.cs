@@ -1,8 +1,8 @@
-using DominoTrain.Enumerations;
-using DominoTrain.Models;
+using DominoTrain.Core.Enumerations;
+using DominoTrain.Core.Models;
 using System.Collections.Immutable;
 
-namespace DominoTrain.Interfaces;
+namespace DominoTrain.Core.Interfaces;
 
 public interface ISetRules
 {

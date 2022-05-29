@@ -12,6 +12,8 @@ Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "firebase-js", "src\firebase
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Identity.Firebase", "src\Microsoft.Identity.Firebase\Microsoft.Identity.Firebase.csproj", "{77425B3E-FB60-4284-A48F-23EAE8BBEAE7}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DominoTrain.Core", "..\domino-train-webcli\src\domino-train-core\DominoTrain.Core.csproj", "{2DAE05A7-9D9D-494A-8CF1-7C1D970F0DE1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,12 +32,16 @@ Global
 		{77425B3E-FB60-4284-A48F-23EAE8BBEAE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{77425B3E-FB60-4284-A48F-23EAE8BBEAE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{77425B3E-FB60-4284-A48F-23EAE8BBEAE7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2DAE05A7-9D9D-494A-8CF1-7C1D970F0DE1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2DAE05A7-9D9D-494A-8CF1-7C1D970F0DE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2DAE05A7-9D9D-494A-8CF1-7C1D970F0DE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2DAE05A7-9D9D-494A-8CF1-7C1D970F0DE1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {A281C13B-5AA8-42FD-A101-182FD709B41E}
 		               SolutionGuid = {C13D52DD-61F2-4ADF-BFFE-C668002ACE40}
+		SolutionGuid = {A281C13B-5AA8-42FD-A101-182FD709B41E}
 	EndGlobalSection
 EndGlobal

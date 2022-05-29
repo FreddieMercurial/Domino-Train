@@ -1,7 +1,8 @@
-using DominoTrain.Interfaces;
+using DominoTrain.Core.Interfaces;
+using DominoTrain.Core.Models.Rules;
 using DominoTrain.Models.Rules;
 
-namespace DominoTrain.Enumerations;
+namespace DominoTrain.Core.Enumerations;
 
 public static class RuleSetTypeMap
 {

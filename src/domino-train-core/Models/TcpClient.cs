@@ -3,7 +3,7 @@ using System.Net.Sockets;
 using System.Runtime.Versioning;
 using System.Text;
 
-namespace DominoTrain.Models;
+namespace DominoTrain.Core.Models;
 
 [UnsupportedOSPlatform(platformName: "browser")]
 public sealed class TcpClient
