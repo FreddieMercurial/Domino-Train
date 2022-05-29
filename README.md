@@ -9,7 +9,7 @@ C# web multiplayer Domino Train (.Net 6 Blazor)
 
 Starting to draw dominoes (with CSS!)
 
-  <img width="623" alt="Screen Shot 2022-05-19 at 1 48 18 PM" src="https://user-images.githubusercontent.com/3766240/169412837-8a608bee-f0af-4bf6-9a43-62fcb701ad7c.png">
+![image](https://user-images.githubusercontent.com/3766240/170846661-18c9492e-fe72-4f97-919c-eecc0fa22dd8.png)
 
 ## References
 ### blazor
