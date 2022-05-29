@@ -1,0 +1,76 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32421.90
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "firebase-js", "src\firebase-js\firebase-js.csproj", "{E1872F99-FBC2-4005-9D76-99CD608FB6A0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Identity.Firebase", "src\Microsoft.Identity.Firebase\Microsoft.Identity.Firebase.csproj", "{77425B3E-FB60-4284-A48F-23EAE8BBEAE7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "domino-train-webcli", "src\domino-train-webcli\domino-train-webcli.csproj", "{C6606C31-7A36-475B-9856-7EE9C8CACC0E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{2E15E8BE-994C-4957-8133-5C067AD0685C} = {2E15E8BE-994C-4957-8133-5C067AD0685C}
+		{4C357542-CC45-4792-9284-73DC3A41F3D4} = {4C357542-CC45-4792-9284-73DC3A41F3D4}
+		{A64382E9-83FF-44CD-A0DD-5144AAA94F8C} = {A64382E9-83FF-44CD-A0DD-5144AAA94F8C}
+		{E1872F99-FBC2-4005-9D76-99CD608FB6A0} = {E1872F99-FBC2-4005-9D76-99CD608FB6A0}
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HACC", "src\HACC\src\HACC\HACC.csproj", "{9AE84F53-E855-4E9D-9EAC-7FA0A13745C0}"
+	ProjectSection(ProjectDependencies) = postProject
+		{2E15E8BE-994C-4957-8133-5C067AD0685C} = {2E15E8BE-994C-4957-8133-5C067AD0685C}
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Terminal.Gui", "src\HACC\src\gui.cs\Terminal.Gui\Terminal.Gui.csproj", "{4C357542-CC45-4792-9284-73DC3A41F3D4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blazor.Extensions.Canvas", "src\HACC\src\Blazor.Extensions.Canvas\src\Blazor.Extensions.Canvas\Blazor.Extensions.Canvas.csproj", "{A64382E9-83FF-44CD-A0DD-5144AAA94F8C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blazor.Extensions.Canvas.JS", "src\HACC\src\Blazor.Extensions.Canvas\src\Blazor.Extensions.Canvas.JS\Blazor.Extensions.Canvas.JS.csproj", "{2E15E8BE-994C-4957-8133-5C067AD0685C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DominoTrain.Core", "src\domino-train-core\DominoTrain.Core.csproj", "{9DA52F43-1C7A-4060-AE8A-EB7906A7D85B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E1872F99-FBC2-4005-9D76-99CD608FB6A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1872F99-FBC2-4005-9D76-99CD608FB6A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1872F99-FBC2-4005-9D76-99CD608FB6A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1872F99-FBC2-4005-9D76-99CD608FB6A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77425B3E-FB60-4284-A48F-23EAE8BBEAE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77425B3E-FB60-4284-A48F-23EAE8BBEAE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77425B3E-FB60-4284-A48F-23EAE8BBEAE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77425B3E-FB60-4284-A48F-23EAE8BBEAE7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6606C31-7A36-475B-9856-7EE9C8CACC0E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6606C31-7A36-475B-9856-7EE9C8CACC0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6606C31-7A36-475B-9856-7EE9C8CACC0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6606C31-7A36-475B-9856-7EE9C8CACC0E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9AE84F53-E855-4E9D-9EAC-7FA0A13745C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9AE84F53-E855-4E9D-9EAC-7FA0A13745C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9AE84F53-E855-4E9D-9EAC-7FA0A13745C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9AE84F53-E855-4E9D-9EAC-7FA0A13745C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C357542-CC45-4792-9284-73DC3A41F3D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C357542-CC45-4792-9284-73DC3A41F3D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C357542-CC45-4792-9284-73DC3A41F3D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C357542-CC45-4792-9284-73DC3A41F3D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A64382E9-83FF-44CD-A0DD-5144AAA94F8C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A64382E9-83FF-44CD-A0DD-5144AAA94F8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A64382E9-83FF-44CD-A0DD-5144AAA94F8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A64382E9-83FF-44CD-A0DD-5144AAA94F8C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E15E8BE-994C-4957-8133-5C067AD0685C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E15E8BE-994C-4957-8133-5C067AD0685C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E15E8BE-994C-4957-8133-5C067AD0685C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E15E8BE-994C-4957-8133-5C067AD0685C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9DA52F43-1C7A-4060-AE8A-EB7906A7D85B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9DA52F43-1C7A-4060-AE8A-EB7906A7D85B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9DA52F43-1C7A-4060-AE8A-EB7906A7D85B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9DA52F43-1C7A-4060-AE8A-EB7906A7D85B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		               SolutionGuid = {C13D52DD-61F2-4ADF-BFFE-C668002ACE40}
+		SolutionGuid = {A281C13B-5AA8-42FD-A101-182FD709B41E}
+	EndGlobalSection
+EndGlobal
