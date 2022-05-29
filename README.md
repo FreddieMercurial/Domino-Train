@@ -13,7 +13,7 @@ Starting to draw dominoes (with CSS!)
 
 I was working on the [HACC](https://github.com/Blazor-Console/HACC) project anyway and a text client in paralell made sense...
 
-![image](https://user-images.githubusercontent.com/3766240/170863987-0984d7fb-d49c-4231-886d-cde978ffb839.png)
+![image](https://user-images.githubusercontent.com/3766240/170865024-741ec5fe-b977-4a9b-a287-df6ea6efbee6.png)
 
 ## References
 ### blazor
