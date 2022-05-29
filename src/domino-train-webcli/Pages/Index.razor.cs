@@ -1,5 +1,8 @@
 using HACC.Components;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.Identity.Firebase.Components;
+using Microsoft.Identity.Firebase.Models;
 using Terminal.Gui;
 
 namespace DominoTrain.WebCli.Pages;
@@ -11,6 +14,8 @@ public partial class Index : ComponentBase
     /// </summary>
     private WebConsole? _webConsole;
 
+    public TextField TextField { get; set; }
+    
     protected void InitApp()
     {
         if (this._webConsole is null)
@@ -18,13 +23,15 @@ public partial class Index : ComponentBase
 
         this._webConsole.WebApplication!.Shutdown();
         this._webConsole.WebApplication.Init();
+        StateProvider.Instance.AuthenticationStateChanged += AuthenticationStateProvider_AuthenticationStateChanged;
 
         var label = new Label(text: "Enter your name:")
         {
             X = Pos.Center(),
             Y = 0,
+            
         };
-        var text = new TextField("gui.cs:")
+        TextField = new TextField(FirebaseAuth.IsAuthenticated ? FirebaseAuth.CurrentUser!.BestAvailableName : "")
         {
             X = Pos.Center(),
             Y = 2,
@@ -35,7 +42,7 @@ public partial class Index : ComponentBase
             X = Pos.Center(),
             Y = 4
         };
-        button.Clicked += () => MessageBox.Query("Say Hello", $"Welcome {text.Text}", "Ok");
+        button.Clicked += () => MessageBox.Query("Say Hello", $"Welcome {this.TextField.Text}", "Ok");
         var text2 = new TextField("this is horiz/vert centered")
         {
             X = Pos.Center(),
@@ -73,8 +80,13 @@ public partial class Index : ComponentBase
             Height = Dim.Fill()
         };
 
-        win.Add(label, text, button, text2, lblMouse, lblKey);
+        win.Add(label, this.TextField, button, text2, lblMouse, lblKey);
         Application.Top.Add(win);
         this._webConsole.WebApplication.Run();
+    }
+
+    private void AuthenticationStateProvider_AuthenticationStateChanged(Task<AuthenticationState> task)
+    {
+        TextField.Text = FirebaseAuth.CurrentUser!.BestAvailableName;
     }
 }
