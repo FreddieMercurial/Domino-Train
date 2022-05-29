@@ -6,6 +6,7 @@ C# web multiplayer Domino Train (.Net 6 Blazor)
 * Uses webpack to compile node js into single firebase enabled javascript to inject into blazor and places it in wwwwroot
 * Firebase and Blazor playing nice
 * Reference project https://github.com/FreddieMercurial/Blazor-WASM-Firebase
+* Initial UI borrowed from https://github.com/SharonBrizinov/DominoesReactJS
 
 Starting to draw dominoes (with CSS!)
 
