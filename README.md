@@ -11,6 +11,10 @@ Starting to draw dominoes (with CSS!)
 
 ![image](https://user-images.githubusercontent.com/3766240/170846661-18c9492e-fe72-4f97-919c-eecc0fa22dd8.png)
 
+I was working on the [HACC](https://github.com/Blazor-Console/HACC) project anyway and a text client in paralell made sense...
+
+![image](https://user-images.githubusercontent.com/3766240/170863987-0984d7fb-d49c-4231-886d-cde978ffb839.png)
+
 ## References
 ### blazor
 * https://code-maze.com/blazor-webassembly-authentication-aspnetcore-identity/
