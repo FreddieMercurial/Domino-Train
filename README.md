@@ -14,7 +14,7 @@ Starting to draw dominoes (with CSS!)
 
 I was working on the [HACC](https://github.com/Blazor-Console/HACC) project anyway and a text client in paralell made sense...
 
-![image](https://user-images.githubusercontent.com/3766240/170865024-741ec5fe-b977-4a9b-a287-df6ea6efbee6.png)
+![Screenshot 2022-05-30 003648](https://user-images.githubusercontent.com/3766240/171043764-d48d4964-ed92-4f58-9a89-b847091275e3.png)
 
 ## References
 ### blazor
