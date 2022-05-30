@@ -28,6 +28,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DominoTrain.Core", "src\domino-train-core\DominoTrain.Core.csproj", "{9DA52F43-1C7A-4060-AE8A-EB7906A7D85B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "domino-train", "src\domino-train\domino-train.csproj", "{205C76CC-CF14-4518-A848-2747955F12B3}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E1872F99-FBC2-4005-9D76-99CD608FB6A0} = {E1872F99-FBC2-4005-9D76-99CD608FB6A0}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
