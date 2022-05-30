@@ -1,0 +1,19 @@
+﻿@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using Microsoft.Identity.Firebase.Models
+@inherits LayoutComponentBase
+@inject NavigationManager Navigation
+@inject SignOutSessionStateManager SignOutManager
+@Body
+<FirebaseAuth />
+<style type="text/css">
+body {
+    width: 100%;
+    height: 100%;
+    background: black;
+    color: white;
+    text-align: center;
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+</style>
