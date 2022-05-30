@@ -7,7 +7,7 @@
 <div class="card">
     <h4 class="card-header">Register</h4>
     <div class="card-body">
-        <EditForm Model="@model" OnValidSubmit="OnValidSubmit">
+        <EditForm Model="@model" OnValidSubmit="@OnValidSubmit" id="register-form">
             <DataAnnotationsValidator />
             <div class="form-group">
                 <label>Display Name</label>
@@ -16,42 +16,52 @@
             </div>
             <div class="form-group">
                 <label>Email</label>
-                <InputText @bind-Value="model.Email" class="form-control" />
+                <InputText @bind-Value="model.Email" class="form-control" autocomplete="email" />
                 <ValidationMessage For="@(() => model.Email)" />
             </div>
             <div class="form-group">
                 <label>Password</label>
-                <InputText @bind-Value="model.Password" type="password" class="form-control" />
+                <InputText @bind-Value="model.Password" type="password" class="form-control" autocomplete="new-password" />
                 <ValidationMessage For="@(() => model.Password)" />
             </div>
-            <button disabled="@loading" class="btn btn-primary">
+            <button disabled="@loading" class="btn btn-primary" type="submit" form="register-form">
                 @if (loading) 
                 {
                     <span class="spinner-border spinner-border-sm mr-1"></span>
                 }
                 Register
             </button>
-            <NavLink href="account/login" class="btn btn-link">Cancel</NavLink>
+            <NavLink href="authentication/login" class="btn btn-link">Cancel</NavLink>
         </EditForm>
     </div>
 </div>
 
 @code {
     private NewUser model = new NewUser();
-    private bool loading;
+    private bool loading = true;
 
-    private async void OnValidSubmit()
+    protected override void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+        if (!firstRender) loading = false;
+    }
+
+    private async void OnValidSubmit(EditContext editContext)
     {
         loading = true;
         try
         {
             var firebaseUser = await FirebaseAuth.CreateEmailUserAsync(model.Email, model.Password, model.DisplayName, _jsRuntime);
-            NavigationManager.NavigateTo("account/login");
+            if (firebaseUser is not null)
+            {
+                NavigationManager.NavigateTo("/");
+                return;
+            }
         }
-        catch (Exception ex)
+        catch
         {
-            loading = false;
-            StateHasChanged();
         }
+        loading = false;
+        StateHasChanged();
     }
 }
