@@ -14,7 +14,7 @@ public partial class Index : ComponentBase
     /// </summary>
     private WebConsole? _webConsole;
 
-    public TextField TextField { get; set; }
+    public TextField? TextField { get; set; }
     
     protected void InitApp()
     {
@@ -31,7 +31,7 @@ public partial class Index : ComponentBase
             Y = 0,
             
         };
-        TextField = new TextField(FirebaseAuth.IsAuthenticated ? FirebaseAuth.CurrentUser!.BestAvailableName : "")
+        this.TextField = new TextField(FirebaseAuth.IsAuthenticated ? FirebaseAuth.CurrentUser!.BestAvailableName : "")
         {
             X = Pos.Center(),
             Y = 2,
@@ -74,7 +74,7 @@ public partial class Index : ComponentBase
             return false;
         };
 
-        var win = new Window("HACC Demo")
+        var win = new Window("Domino Train")
         {
             Width = Dim.Fill(),
             Height = Dim.Fill()
@@ -87,6 +87,6 @@ public partial class Index : ComponentBase
 
     private void AuthenticationStateProvider_AuthenticationStateChanged(Task<AuthenticationState> task)
     {
-        TextField.Text = FirebaseAuth.CurrentUser!.BestAvailableName;
+        this.TextField!.Text = FirebaseAuth.IsAuthenticated ? FirebaseAuth.CurrentUser!.BestAvailableName : "";
     }
 }

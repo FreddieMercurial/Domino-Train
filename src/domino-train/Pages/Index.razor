@@ -11,64 +11,21 @@
 <p><ul>
     <li>Built on C# with Blazor WebAssembly</li>
     <li>Built on ES6 Firebase version 9.8.x non-namespaced, webpacked</li>
+    <AuthorizeView>
+        <Authorized>
+            <li><a href="/domino">Test</a></li>
+        </Authorized>
+        <NotAuthorized>
+            <li>
+                <p>Login or Register to search for and create games</p>
+                <ul>
+                    <li><NavLink href="authentication/login" class="btn btn-link">Login</NavLink></li>
+                    <li><NavLink href="account/register" class="btn btn-link">Register</NavLink></li>
+                </ul>
+            </li>
+        </NotAuthorized>
+        </AuthorizeView>
 </ul></p>
 
-<h3>ClaimsPrincipal Data</h3>
-
-<button @onclick="GetClaimsPrincipalData">Get ClaimsPrincipal Data</button>
-
-<p>@authMessage</p>
-
-@if (claims.Count() > 0)
-{
-    <ul>
-        @foreach (var claim in claims)
-        {
-            <li>@claim.Type: @claim.Value</li>
-        }
-    </ul>
-}
-
-<p>@surnameMessage</p>
-
 @code {
-    [CascadingParameter]
-    private Task<AuthenticationState> authenticationStateTask { get; set; }
-
-    private string authMessage;
-    private string surnameMessage;
-    private IEnumerable<Claim> claims = Enumerable.Empty<Claim>();
-
-    private async Task GetClaimsPrincipalData()
-    {
-        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-        var user = authState.User;
-
-        if (user is not null && user.Identity is not null && user.Identity.IsAuthenticated)
-        {
-            authMessage = $"{user.Identity.Name} is authenticated.";
-            claims = user.Claims;
-            surnameMessage = 
-                $"Surname: {user.FindFirst(c => c.Type == ClaimTypes.Surname)?.Value}";
-        }
-        else
-        {
-            authMessage = "The user is NOT authenticated.";
-        }
-    }
-
-    private async Task LogUsername()
-    {
-        var authState = await authenticationStateTask;
-        var user = authState.User;
-
-        if (user is not null && user.Identity is not null && user.Identity.IsAuthenticated)
-        {
-            authMessage = $"{user.Identity.Name} is authenticated.";
-        }
-        else
-        {
-            authMessage = "The user is NOT authenticated.";
-        }
-    }
 }
