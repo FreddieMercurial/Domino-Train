@@ -1,5 +1,5 @@
-[submodule "src/firebase-js"]
-	path = src/firebase-js
+[submodule "src/firebaseJs"]
+	path = src/firebaseJs
 	url = https://github.com/FreddieMercurial/BlazorWasmFirebaseAuthJs.git
 	branch = main
 [submodule "src/Microsoft.Identity.Firebase"]
@@ -10,3 +10,6 @@
 	path = src/HACC
 	url = https://github.com/Blazor-Console/HACC.git
 	branch = main
+[submodule "src/PhantomMail"]
+	path = src/PhantomMail
+	url = https://github.com/PhantomMail/PhantomMail.git

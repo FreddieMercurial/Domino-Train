@@ -1,31 +1,33 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
+        <RootNamespace>DominoTrain.WebCli</RootNamespace>
+    </PropertyGroup>
 
-  <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
-    <RootNamespace>DominoTrain.WebCli</RootNamespace>
-  </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.5" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.5" PrivateAssets="all" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="6.0.5" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.5" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.5" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="6.0.5" />
-  </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\domino-train-core\DominoTrain.Core.csproj" />
+        <ProjectReference Include="..\HACC\src\gui.cs\Terminal.Gui\Terminal.Gui.csproj" />
+        <ProjectReference Include="..\HACC\src\HACC\HACC.csproj" />
+        <ProjectReference Include="..\Microsoft.Identity.Firebase\Microsoft.Identity.Firebase.csproj" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\domino-train-core\DominoTrain.Core.csproj" />
-    <ProjectReference Include="..\HACC\src\gui.cs\Terminal.Gui\Terminal.Gui.csproj" />
-    <ProjectReference Include="..\HACC\src\HACC\HACC.csproj" />
-    <ProjectReference Include="..\Microsoft.Identity.Firebase\Microsoft.Identity.Firebase.csproj" />
-  </ItemGroup>
+    <ItemGroup>
+        <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
-  </ItemGroup>
-
-<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-	<Copy SourceFiles="$(SolutionDir)src\firebase-js\dist\firebase-js-bundle.js" DestinationFolder="$(SolutionDir)\src\domino-train-webcli\wwwroot" />
-</Target>
+	<Target Name="firebaseJsPreBuild" BeforeTargets="PreBuildEvent">
+		<Copy SourceFiles="$(SolutionDir)src\firebaseJs\dist\firebaseJs-bundle.js"
+		  DestinationFolder="$(SolutionDir)src\domino-train-webcli\wwwroot"
+		  ContinueOnError="true"
+		  SkipUnchangedFiles="false" />
+	</Target>
 </Project>

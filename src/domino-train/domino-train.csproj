@@ -1,21 +1,20 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <RootNamespace>DominoTrain</RootNamespace>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
+        <Company>Digital Defiance</Company>
+        <Product>Domino Train</Product>
+    </PropertyGroup>
 
-  <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <RootNamespace>DominoTrain</RootNamespace>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
-    <Company>Digital Defiance</Company>
-    <Product>Domino Train</Product>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="LibSassBuilder" Version="2.0.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.5" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.5" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="6.0.5" />
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="LibSassBuilder" Version="2.0.1" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.5" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.5" PrivateAssets="all" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="6.0.5" />
+    </ItemGroup>
 	
     <PropertyGroup>
         <!-- outputstyle option -->
@@ -27,16 +26,19 @@
         <LibSassMessageLevel>High</LibSassMessageLevel>
     </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\domino-train-core\DominoTrain.Core.csproj" />
-    <ProjectReference Include="..\Microsoft.Identity.Firebase\Microsoft.Identity.Firebase.csproj" />
-  </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\domino-train-core\DominoTrain.Core.csproj" />
+        <ProjectReference Include="..\Microsoft.Identity.Firebase\Microsoft.Identity.Firebase.csproj" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
-  </ItemGroup>
+    <ItemGroup>
+        <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
+    </ItemGroup>
 
-	<Target Name="PreBuild" BeforeTargets="PreBuild">
-		<Copy SourceFiles="$(SolutionDir)src\firebase-js\dist\firebase-js-bundle.js" DestinationFolder="$(SolutionDir)\src\domino-train\wwwroot" />
+	<Target Name="firebaseJsPreBuild" BeforeTargets="PreBuildEvent">
+		<Copy SourceFiles="$(SolutionDir)src\firebaseJs\dist\firebaseJs-bundle.js"
+		  DestinationFolder="$(SolutionDir)src\domino-train\wwwroot"
+		  ContinueOnError="true"
+		  SkipUnchangedFiles="false" />
 	</Target>
 </Project>
