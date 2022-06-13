@@ -15,7 +15,7 @@ public partial class Index : ComponentBase
     private WebConsole? _webConsole;
 
     public TextField? TextField { get; set; }
-    
+
     protected void InitApp()
     {
         if (this._webConsole is null)
@@ -23,13 +23,13 @@ public partial class Index : ComponentBase
 
         this._webConsole.WebApplication!.Shutdown();
         this._webConsole.WebApplication.Init();
-        StateProvider.Instance.AuthenticationStateChanged += AuthenticationStateProvider_AuthenticationStateChanged;
+        StateProvider.Instance.AuthenticationStateChanged += this.AuthenticationStateProvider_AuthenticationStateChanged;
 
         var label = new Label(text: "Enter your name:")
         {
             X = Pos.Center(),
             Y = 0,
-            
+
         };
         this.TextField = new TextField(FirebaseAuth.IsAuthenticated ? FirebaseAuth.CurrentUser!.BestAvailableName : "")
         {
@@ -70,7 +70,7 @@ public partial class Index : ComponentBase
         Application.RootKeyEvent = (e) =>
         {
             var mk = ShortcutHelper.GetModifiersKey(e);
-            lblKey.Text = $"Key:{e.Key};KeyValue:{e.KeyValue};KeyChar:{(char) e.KeyValue}\nAlt:{mk.HasFlag(Key.AltMask)};Ctrl:{mk.HasFlag(Key.CtrlMask)};Shift:{mk.HasFlag(Key.ShiftMask)};Count:{++keyCount}";
+            lblKey.Text = $"Key:{e.Key};KeyValue:{e.KeyValue};KeyChar:{(char)e.KeyValue}\nAlt:{mk.HasFlag(Key.AltMask)};Ctrl:{mk.HasFlag(Key.CtrlMask)};Shift:{mk.HasFlag(Key.ShiftMask)};Count:{++keyCount}";
             return false;
         };
 

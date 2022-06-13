@@ -19,6 +19,20 @@ public class EngineHub
 
     [DataMember] private Guid enginePlayerId;
 
+    [DataMember] private Guid? _highDoubleDominoId;
+    public Domino? HighDouble
+    {
+        get => _highDoubleDominoId is null || _highDoubleDominoId.Equals(Guid.Empty) ? null : this.game.GetDomino(_highDoubleDominoId.Value);
+        private set
+        {
+            if (value is null)
+                return;
+
+            if (!value.IsDouble)
+                throw new Exception("Domino is not a double");
+        }
+    }
+
     public EngineHub(Game game, int hubSize = 8)
     {
         this.HubId = Guid.NewGuid();

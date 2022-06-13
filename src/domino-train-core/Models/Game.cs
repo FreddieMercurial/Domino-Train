@@ -11,35 +11,59 @@ public class Game
 {
     [DataMember] public readonly Guid GameId;
 
-    private readonly Dictionary<Guid, Player> players;
+    private readonly Guid OwnerId;
+    private Player Owner => this._players[this.OwnerId];
+
+    private readonly Dictionary<Guid, Player> _players;
 
     public readonly ISetRules Rules;
     private DominoSet? dominoSet;
 
-    private EngineHub engineHub;
+    private EngineHub EngineHub;
 
-    public Game(List<Player>? players = null, int aiPlayerCount = 0)
+    private readonly CommunityTrainPlayer communityTrainPlayer;
+
+    public Game(Player owner, List<Player>? players = null, int aiPlayerCount = 0)
     {
+        if (owner is CommunityTrainPlayer)
+        {
+            throw new Exception("Owner cannot be CommunityTrainPlayer");
+        }
+        this.DateCreated = DateTime.UtcNow;
         this.GameId = Guid.NewGuid();
         this.Rules = new DefaultSetRules();
-        this.players = new Dictionary<Guid, Player>();
-        this.GameHistory = new GameHistory();
-        this.engineHub = new EngineHub(game: this);
-        this.TurnOrder = new List<Guid>();
+        this._players = new Dictionary<Guid, Player>();
+        this.GameHistory = new GameEventLedger(game: this);
+        this.EngineHub = new EngineHub(game: this);
+        this.DateStarted = null;
+        this.DatePaused = null;
+        this.DateEnded = null;
+        this.DateTurnStarted = null;
         this.Turn = 0;
-        this.dominoSet = players is null
-            ? null
-            : new DominoSet(
-                game: this,
-                playerCount: this.PlayerCount,
-                rules: this.Rules);
-        this.DominoSetId = this.dominoSet?.SetId ?? Guid.Empty;
-        this.Started = false;
-        this.Ended = false;
-        this.Init();
+        this.TurnOrder = new List<Guid>();
+
+        bool needCommunityPlayer = true;
         if (players is not null)
+        {
             foreach (var player in players)
+            {
+                if (player is CommunityTrainPlayer ctp)
+                {
+                    this.communityTrainPlayer = ctp;
+                    needCommunityPlayer = false;
+                }
                 this.AddPlayer(player: player);
+            }
+        }
+        // if passed in players did not include a community player, add one
+        if (needCommunityPlayer)
+        {
+            this.communityTrainPlayer = new CommunityTrainPlayer(game: this);
+            this.AddPlayer(player: this.communityTrainPlayer);
+            needCommunityPlayer = false;
+        }
+        if (!this._players.ContainsKey(key: owner.PlayerId))
+            this.AddPlayer(player: owner);
 
         for (var i = 0; i < aiPlayerCount; i++)
         {
@@ -49,9 +73,13 @@ public class Game
             this.AddPlayer(player: newPlayer);
         }
 
-        // if passed in players did not include a community player, add one
-        if (!this.players.Values.Any(predicate: player => player.CommunityTrainVirtualPlayer))
-            this.AddPlayer(player: new CommunityTrainPlayer(game: this));
+        // after players are set up
+        // TODO: need ability to update player count on domino set before game starts?
+        this.dominoSet = new DominoSet(
+                game: this,
+                playerCount: this.PlayerCount,
+                rules: this.Rules);
+        this.DominoSetId = this.dominoSet?.SetId ?? Guid.Empty;
     }
 
     [DataMember] public Guid DominoSetId { get; private set; }
@@ -60,11 +88,11 @@ public class Game
 
     [DataMember] public int Turn { get; private set; }
 
-    [DataMember] public Guid StationHubId => this.engineHub.HubId;
+    [DataMember] public Guid StationHubId => this.EngineHub.HubId;
 
     private bool CanChange => !this.Ended && !this.Started;
 
-    public GameHistory GameHistory { get; private set; }
+    public readonly GameEventLedger GameHistory;
     public List<Guid> TurnOrder { get; }
 
     public int TurnIndex => this.CanChange ? this.Turn % this.PlayerCount : -1;
@@ -80,37 +108,103 @@ public class Game
             var currentPlayerId = this.CurrentPlayerId;
             if (currentPlayerId.Equals(g: Guid.Empty))
                 return null;
-            return !this.players.ContainsKey(key: currentPlayerId) ? null : this.players[key: currentPlayerId];
+            return !this._players.ContainsKey(key: currentPlayerId) ? null : this._players[key: currentPlayerId];
+        }
+    }
+    [DataMember] public DateTime DateCreated { get; private init; }
+    [DataMember] public DateTime? DateStarted { get; private set; } = null;
+    [DataMember] public DateTime? DateTurnStarted { get; private set; } = null;
+    [DataMember] public DateTime? DateEnded { get; private set; } = null;
+    [DataMember] public DateTime? DatePaused { get; private set; } = null;
+
+    [DataMember] public bool Started
+    {
+        get => DateStarted is not null;
+        private set
+        {
+            if (DateStarted is not null)
+            {
+                throw new Exception("Game already started");
+            }
+            DateStarted = DateTime.UtcNow;
         }
     }
 
-    [DataMember] public bool Started { get; private set; }
+    [DataMember] public bool Ended
+    {
+        get => DateEnded is not null;
+        private set
+        {
+            if (DateEnded is not null)
+            {
+                throw new Exception("Game already ended");
+            }
+            DateEnded = DateTime.UtcNow;
+        }
+    }
 
-    [DataMember] public bool Ended { get; private set; }
+    [DataMember]
+    public bool TurnEnded
+    {
+        get => DateTurnStarted is not null;
+        private set
+        {
+            if (DateTurnStarted is not null)
+            {
+                throw new Exception("Turn already ended");
+            }
+            DateTurnStarted = DateTime.UtcNow;
+        }
+    }
 
-    public int PlayerCount => this.players.Count - this.CommunityPlayerCount;
+    [DataMember]
+    public bool Paused
+    {
+        get => DatePaused is not null;
+        private set
+        {
+            if (DatePaused is not null && value)
+            {
+                throw new Exception("Already paused");
+            }
+            else if (DatePaused is null && !value)
+            {
+                throw new Exception("not paused");
+            }
+            else if (value)
+            {
+                DatePaused = DateTime.UtcNow;
+            }
+            else
+            {
+                DatePaused = null;
+            }
+        }
+    }
+
+    public int PlayerCount => this._players.Count - this.CommunityPlayerCount;
 
     public int CommunityPlayerCount
-        => this.players.Count(predicate: player => player.Value.CommunityTrainVirtualPlayer);
+        => this._players.Count(predicate: player => player.Value.CommunityTrainVirtualPlayer);
 
-    public int HumanPlayerCount => this.players.Count(predicate: player => !player.Value.AI);
+    public int HumanPlayerCount => this._players.Count(predicate: player => !player.Value.AI);
 
     public int NetworkHumanPlayerCount
-        => this.players.Count(predicate: player => player.Value.GetType() == typeof(HumanNetworkPlayer));
+        => this._players.Count(predicate: player => player.Value.GetType() == typeof(HumanNetworkPlayer));
 
-    public int AiPlayerCount => this.players.Count(predicate: player => player.Value.AI);
+    public int AiPlayerCount => this._players.Count(predicate: player => player.Value.AI);
 
     /// <summary>
     ///     TODO: quote rule
     /// </summary>
     public int TileCount => this.dominoSet is not null ? this.dominoSet.Dominoes.Count : 0;
 
-    public IEnumerable<Guid> AllPlayerIds => this.players.Keys;
+    public IEnumerable<Guid> AllPlayerIds => this._players.Keys;
 
-    public IEnumerable<Guid> NonCommunityPlayerIds => this.players.Values
+    public IEnumerable<Guid> NonCommunityPlayerIds => this._players.Values
         .Where(predicate: player => !player.CommunityTrainVirtualPlayer).Select(selector: player => player.PlayerId);
 
-    public IEnumerable<Player> Players => this.players.Values;
+    public IEnumerable<Player> Players => this._players.Values;
 
     public Player DetermineStartingPlayer()
     {
@@ -129,7 +223,7 @@ public class Game
 
     public Player GetPlayer(Guid id)
     {
-        return this.players[key: id];
+        return this._players[key: id];
     }
 
     public Domino? GetDomino(Guid id)
@@ -141,6 +235,7 @@ public class Game
     {
         if (this.Started) throw new Exception(message: "Game already started");
         if (this.Ended) throw new Exception(message: "Game already ended");
+        this.DateStarted = DateTime.UtcNow;
 
         var startingPlayer = this.DetermineStartingPlayer();
         this.TurnOrder.Clear();
@@ -150,8 +245,8 @@ public class Game
         do
         {
             nextPlayer = this.Rules.PlayOrderClockwise
-                ? this.engineHub.PlayerToRight(player: nextPlayer)
-                : this.engineHub.PlayerToLeft(player: nextPlayer);
+                ? this.EngineHub.PlayerToRight(player: nextPlayer)
+                : this.EngineHub.PlayerToLeft(player: nextPlayer);
             // stop when we reach one we've added already
             if (this.TurnOrder.Contains(item: nextPlayer.PlayerId)) break;
             this.TurnOrder.Add(item: nextPlayer.PlayerId);
@@ -168,26 +263,46 @@ public class Game
     /// </summary>
     public void Pass()
     {
+        var dateTurnEnded = DateTime.UtcNow;
         if (this.CurrentPlayer is null)
             throw new Exception(message: "No current player");
+        if (this.DateTurnStarted is null)
+            throw new Exception(message: "Cannot end turn when turn has not begun");
+        this.GameHistory.AddRecord(record: new HistoryRecord(
+            Turn: this.Turn++,
+            EventTime: dateTurnEnded,
+            EventType: Enumerations.GameEventType.TurnEnded,
+            PlayerId: this.CurrentPlayer.PlayerId,
+            ExistingDominoId: Guid.Empty,
+            AddedDominoId: Guid.Empty));
+        this.DateTurnStarted = null;
+    }
 
+    private void EndGame(Player requestingPlayer)
+    {
+        var dateEnded = DateTime.UtcNow;
+        if (this.DateStarted is null)
+            throw new Exception(message: "Game not started");
+        if (this.DateEnded is not null)
+            throw new Exception(message: "Game already ended");
         this.GameHistory.AddRecord(record: new HistoryRecord(
             Turn: this.Turn,
-            Time: DateTime.Now,
-            PlayerId: this.CurrentPlayer.PlayerId,
-            DominoId: Guid.Empty,
-            NextDominoId: Guid.Empty));
-        this.Turn++;
+            EventTime: dateEnded,
+            EventType: Enumerations.GameEventType.GameEnded,
+            PlayerId: requestingPlayer.PlayerId,
+            ExistingDominoId: Guid.Empty,
+            AddedDominoId: Guid.Empty));
+        this.DateEnded = dateEnded;
     }
 
     public bool HasPlayer(Player player)
     {
-        return this.players.ContainsKey(key: player.PlayerId);
+        return this._players.ContainsKey(key: player.PlayerId);
     }
 
     public bool HasPlayer(Guid id)
     {
-        return this.players.ContainsKey(key: id);
+        return this._players.ContainsKey(key: id);
     }
 
     public bool HasDomino(Domino domino)
@@ -205,9 +320,9 @@ public class Game
         if (!this.CanChange) throw new Exception(message: "Game already in progress");
         if (player is CommunityTrainPlayer communityTrainPlayer)
         {
-            if (this.players.Values.Any(predicate: p => p.CommunityTrainVirtualPlayer))
+            if (this._players.Values.Any(predicate: p => p.CommunityTrainVirtualPlayer))
                 throw new Exception(message: "Community train player already exists");
-            this.players[key: player.PlayerId] = communityTrainPlayer;
+            this._players[key: player.PlayerId] = communityTrainPlayer;
         }
         else
         {
@@ -215,10 +330,14 @@ public class Game
             if (newPlayerCount >= this.Rules.MaximumPlayers)
                 throw new Exception(message: $"Game already has max players ({this.Rules.MaximumPlayers})");
             if (this.HasPlayer(player: player)) throw new Exception(message: "Player already in game");
-            this.players[key: player.PlayerId] = player;
+            this._players[key: player.PlayerId] = player;
         }
 
         this.ResizeHub();
+    }
+
+    public void DealInitialHand(Player player)
+    {
         this.Deal(
             player: player,
             tileCount: this.TileCount);
@@ -235,8 +354,8 @@ public class Game
         var newPlayerCount = this.PlayerCount - 1;
         if (newPlayerCount <= this.Rules.MinimumPlayers)
             throw new Exception(message: $"Game already has minimum players ({this.Rules.MinimumPlayers})");
-        if (this.players.ContainsKey(key: player.PlayerId))
-            this.players.Remove(key: player.PlayerId);
+        if (this._players.ContainsKey(key: player.PlayerId))
+            this._players.Remove(key: player.PlayerId);
         if (this.TurnOrder.Contains(item: player.PlayerId))
             this.TurnOrder.Remove(item: player.PlayerId);
         this.ResizeHub();
@@ -247,25 +366,13 @@ public class Game
     /// <returns>Returns whether resized</returns>
     private bool ResizeHub()
     {
-        var playerCount = this.players.Count;
+        var playerCount = this._players.Count;
         // need number of players plus one for the community train
         var hubSize = playerCount + 1;
-        var oldHubId = this.engineHub.HubId;
-        this.engineHub = this.engineHub.Resize(newSize: hubSize);
-        return oldHubId == this.engineHub.HubId;
+        var oldHubId = this.EngineHub.HubId;
+        this.EngineHub = this.EngineHub.Resize(newSize: hubSize);
+        return oldHubId == this.EngineHub.HubId;
     }
-
-    private void Init()
-    {
-        if (this.Started) throw new Exception(message: "Game already started");
-
-        this.Ended = false;
-        foreach (var player in this.players.Values) player.ResetDominoes();
-
-        // clear history
-        this.GameHistory = new GameHistory();
-    }
-
 
     private void Deal(Player player, int tileCount)
     {
@@ -290,13 +397,21 @@ public class Game
     }
 
 
-    public bool PlayDomino(Domino dominoInHand)
+    public bool PlayDomino(Domino dominoInHand, Player destinationPlayer)
     {
         if (!this.CanChange) return false;
 
         if (this.CurrentPlayer is null) return false;
 
         if (!this.CurrentPlayer.HasDomino(dominoId: dominoInHand.DominoId)) return false;
+
+        if (destinationPlayer is CommunityTrainPlayer dctp && this.communityTrainPlayer is not null)
+        {
+            if (dctp.PlayerId.Equals(this.communityTrainPlayer.PlayerId))
+            {
+
+            }
+        }
 
         this.dominoSet ??= new DominoSet(
             game: this,
@@ -310,14 +425,15 @@ public class Game
                         dominoInHand.Value2 != this.dominoSet.HighestTile:
                 return false;
             case 0:
-                this.engineHub.SetEnginePlayer(player: this.CurrentPlayer);
+                this.EngineHub.SetEnginePlayer(player: this.CurrentPlayer);
                 this.CurrentPlayer.MoveDominoToTrain(dominoId: dominoInHand.DominoId);
                 this.GameHistory.AddRecord(record: new HistoryRecord(
                     Turn: this.Turn,
-                    Time: DateTime.Now,
+                    EventTime: DateTime.UtcNow,
+                    EventType: Enumerations.GameEventType.PlayTile,
                     PlayerId: this.CurrentPlayer.PlayerId,
-                    DominoId: Guid.Empty,
-                    NextDominoId: dominoInHand.DominoId));
+                    ExistingDominoId: Guid.Empty,
+                    AddedDominoId: dominoInHand.DominoId));
                 this.Pass();
                 return true;
         }
@@ -336,18 +452,20 @@ public class Game
             // domino in hand matches domino on board, attached to our right side
             this.GameHistory.AddRecord(record: new HistoryRecord(
                 Turn: this.Turn,
-                Time: DateTime.Now,
+                EventTime: DateTime.UtcNow,
+                EventType: Enumerations.GameEventType.PlayTile,
                 PlayerId: this.CurrentPlayer.PlayerId,
-                DominoId: dominoOnBoard.DominoId,
-                NextDominoId: dominoInHand.DominoId));
+                ExistingDominoId: dominoOnBoard.DominoId,
+                AddedDominoId: dominoInHand.DominoId));
         else
             // domino in hand matches domino on board, attached by its left side
             this.GameHistory.AddRecord(record: new HistoryRecord(
                 Turn: this.Turn,
-                Time: DateTime.Now,
+                EventTime: DateTime.UtcNow,
+                EventType: Enumerations.GameEventType.PlayTile,
                 PlayerId: this.CurrentPlayer.PlayerId,
-                DominoId: dominoOnBoard.DominoId,
-                NextDominoId: dominoInHand.DominoId));
+                ExistingDominoId: dominoOnBoard.DominoId,
+                AddedDominoId: dominoInHand.DominoId));
 
         this.CurrentPlayer.MoveDominoToTrain(dominoId: dominoInHand.DominoId);
 

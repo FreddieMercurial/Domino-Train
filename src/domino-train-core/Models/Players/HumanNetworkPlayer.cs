@@ -1,5 +1,3 @@
-using DominoTrain.Core.Models;
-
 namespace DominoTrain.Core.Models.Players;
 
 public sealed class HumanNetworkPlayer : HumanPlayer

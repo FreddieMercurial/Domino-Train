@@ -1,6 +1,5 @@
 using DominoTrain.Core.Enumerations;
 using DominoTrain.Core.Interfaces;
-using DominoTrain.Core.Models;
 using System.Collections.Immutable;
 
 // ReSharper disable MemberCanBePrivate.Global

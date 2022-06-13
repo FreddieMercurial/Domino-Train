@@ -5,5 +5,5 @@
     [Parameter]
     public DateTime gameClock { get; set; }
 
-    public TimeSpan gameTime => DateTime.Now.Subtract(gameClock);
+    public TimeSpan gameTime => DateTime.UtcNow.Subtract(gameClock);
 }
