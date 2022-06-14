@@ -1,5 +1,6 @@
 ﻿using DominoTrain.Core.Models.Players;
 using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 
 namespace DominoTrain.Core.Models;
 
@@ -7,15 +8,15 @@ namespace DominoTrain.Core.Models;
 [DataContract]
 public class Domino
 {
-    [DataMember] public readonly Guid DominoId;
+    [DataMember][JsonPropertyName("dominoId")] public readonly Guid DominoId;
 
     public readonly DominoSet DominoSet;
 
-    [DataMember] public readonly Guid DominoSetId;
+    [DataMember][JsonPropertyName("dominoSetId")] public readonly Guid DominoSetId;
 
     public readonly Game Game;
 
-    [DataMember] public readonly Guid GameId;
+    [DataMember][JsonPropertyName("gameId")] public readonly Guid GameId;
 
     /// <summary>
     ///     Value for the first side of the domino.
@@ -45,13 +46,13 @@ public class Domino
 
     public bool IsDouble => this.Value1 == this.Value2;
 
-    [DataMember] public bool? OrientationFlipped { get; private set; }
+    [DataMember][JsonPropertyName("orientationFlipped")] public bool? OrientationFlipped { get; private set; }
 
-    [DataMember] public Guid HubId { get; private set; }
+    [DataMember][JsonPropertyName("hubId")] public Guid HubId { get; private set; }
 
-    [DataMember] public int HubAttachmentIndex { get; private set; }
+    [DataMember][JsonPropertyName("hubAttachmentIndex")] public int HubAttachmentIndex { get; private set; }
 
-    [DataMember] public Guid? OwnerId { get; private set; }
+    [DataMember][JsonPropertyName("ownerId")] public Guid? OwnerId { get; private set; }
 
     public Player? Owner { get; private set; }
 

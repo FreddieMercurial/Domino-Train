@@ -2,6 +2,7 @@
 using DominoTrain.Core.Models.Players;
 using System.Collections.Immutable;
 using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 
 namespace DominoTrain.Core.Models;
 
@@ -9,13 +10,13 @@ namespace DominoTrain.Core.Models;
 [DataContract]
 public class DominoSet
 {
-    [DataMember] public readonly ImmutableList<Domino> Dominoes;
+    [DataMember][JsonPropertyName("dominoes")] public readonly ImmutableList<Domino> Dominoes;
 
     private readonly Game game;
     public readonly int HighestTile;
     public readonly ISetRules Rules;
 
-    [DataMember] public readonly Guid SetId;
+    [DataMember][JsonPropertyName("setId")] public readonly Guid SetId;
 
     private List<Guid> _dealtDominoes;
 

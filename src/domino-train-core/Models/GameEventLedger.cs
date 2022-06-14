@@ -1,5 +1,6 @@
-﻿using System.Runtime.Serialization;
-using DominoTrain.Core.Enumerations;
+﻿using DominoTrain.Core.Enumerations;
+using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 
 namespace DominoTrain.Core.Models;
 
@@ -7,30 +8,33 @@ namespace DominoTrain.Core.Models;
 [DataContract]
 public class GameEventLedger
 {
-    [DataMember] private readonly List<HistoryRecord> RecordedHistory;
+    [DataMember][JsonPropertyName("ledger")] private readonly List<HistoryRecord> Ledger;
 
     private Game game;
+
+    [DataMember]
+    [JsonPropertyName("historyClosed")]
     private bool HistoryClosed;
 
     public GameEventLedger(Game game)
     {
         this.game = game;
-        this.RecordedHistory = new List<HistoryRecord>();
+        this.Ledger = new List<HistoryRecord>();
         // TODO: import remainder of history?
     }
 
-    public int Turns => this.RecordedHistory.Count;
+    public int Turns => this.Ledger.Count;
 
     public IEnumerable<HistoryRecord> History()
     {
-        return this.RecordedHistory;
+        return this.Ledger;
     }
 
     public HistoryRecord GetTurn(int index)
     {
-        if (index < 1 || index > this.RecordedHistory.Count) throw new Exception(message: "Invalid index");
+        if (index < 1 || index > this.Ledger.Count) throw new Exception(message: "Invalid index");
 
-        return this.RecordedHistory[index: index - 1];
+        return this.Ledger[index: index - 1];
     }
 
     private void ValidateRecord(HistoryRecord record)
@@ -50,7 +54,7 @@ public class GameEventLedger
             case GameEventType.Pause when this.game.DateEnded is null && this.game.DateStarted is null:
                 break;
             /// unpause when game hasn't been ended and the last event is a pause event/pause start time isnt null
-            case GameEventType.Unpause when this.game.DateEnded is null && this.RecordedHistory.Last()!.EventType.Equals(GameEventType.Pause) && this.game.DatePaused is not null:
+            case GameEventType.Unpause when this.game.DateEnded is null && this.Ledger.Last()!.EventType.Equals(GameEventType.Pause) && this.game.DatePaused is not null:
                 break;
             /// We can only start a game from GameCreated and we haven't already started before
             /// since a GameCreated event must precede a GameStarted event, any valid game will have a populated lastEvent when encountering a GameStarted
@@ -98,7 +102,7 @@ public class GameEventLedger
         DateTime? turnStartTime = null;
         HistoryRecord? lastEvent = null;
         var historyIndex = 0;
-        foreach (var history in this.RecordedHistory)
+        foreach (var history in this.Ledger)
         {
             switch (history.EventType)
             {
@@ -130,7 +134,7 @@ public class GameEventLedger
                     {
                         totalPausedTimeInGame += pauseDuration;
                     }
-                     
+
                     var timeCreationToThisUnpause = history.EventTime.Subtract(creationTime!.Value);
                     TimeSpan? timeStartToThisUnpause = startTime is null ? null : history.EventTime.Subtract(startTime.Value);
                     timeSpans.Add(new HistoryRecordWithSpans(
@@ -245,7 +249,7 @@ public class GameEventLedger
             if (this.game.DateStarted is null)
                 return null;
             throw new NotImplementedException();
-            
+
         }
     }
 
@@ -254,7 +258,7 @@ public class GameEventLedger
         if (this.HistoryClosed) throw new Exception("History is closed");
         if (this.game.DateEnded is not null) throw new Exception(message: "Game is already ended");
         this.ValidateRecord(record: record);
-        this.RecordedHistory.Add(item: record);
+        this.Ledger.Add(item: record);
     }
 
     public void EndHistory(HistoryRecord record)

@@ -136,7 +136,7 @@ public abstract class Player
         if (domino is null) return false;
         if (this._trainDominoIds.Count == 0)
         {
-            if (domino.Value1 != this.Game.HighestTile || domino.Value2 != this.Game.HighestTile)
+            if (domino.Value1 != this.Game.DominoSet!.HighestTile || domino.Value2 != this.Game.DominoSet.HighestTile)
                 return false;
             domino.SetOrientationFlipped(newValue: false);
         }

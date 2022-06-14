@@ -1,5 +1,6 @@
 using DominoTrain.Core.Models.Players;
 using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 
 namespace DominoTrain.Core.Models;
 
@@ -9,20 +10,20 @@ public class EngineHub
 {
     private readonly Game game;
 
-    [DataMember] public readonly Guid GameId;
+    [DataMember][JsonPropertyName("gameId")] public readonly Guid GameId;
 
-    [DataMember] public readonly Guid HubId;
+    [DataMember][JsonPropertyName("hubId")] public readonly Guid HubId;
 
-    [DataMember] private readonly Guid?[] hubPlayerAttachments;
+    [DataMember][JsonPropertyName("hubPlayerAttachments")] private readonly Guid?[] hubPlayerAttachments;
 
-    [DataMember] private int communityIndex = -1;
+    [DataMember][JsonPropertyName("communityIndex")] private int communityIndex = -1;
 
-    [DataMember] private Guid enginePlayerId;
+    [DataMember][JsonPropertyName("enginePlayerId")] private Guid enginePlayerId;
 
-    [DataMember] private Guid? _highDoubleDominoId;
+    [DataMember][JsonPropertyName("highDoubleDominoId")] private Guid? _highDoubleDominoId;
     public Domino? HighDouble
     {
-        get => _highDoubleDominoId is null || _highDoubleDominoId.Equals(Guid.Empty) ? null : this.game.GetDomino(_highDoubleDominoId.Value);
+        get => this._highDoubleDominoId is null || this._highDoubleDominoId.Equals(Guid.Empty) ? null : this.game.GetDomino(this._highDoubleDominoId.Value);
         private set
         {
             if (value is null)
@@ -52,9 +53,9 @@ public class EngineHub
         ? this.game.GetPlayer(id: this.enginePlayerId)
         : null;
 
-    [DataMember] public Guid CommunityTrainPlacedById { get; set; }
+    [DataMember][JsonPropertyName("communityTrainPlacedById")] public Guid CommunityTrainPlacedById { get; set; }
 
-    public Player? CommunityTrainPlacedBy { get; private set; }
+    public Player? CommunityTrainPlacedBy => this.CommunityTrainPlacedById.Equals(Guid.Empty) ? null : this.game.GetPlayer(this.CommunityTrainPlacedById);
 
     public int HubSize => this.hubPlayerAttachments.Length;
 
@@ -210,7 +211,6 @@ public class EngineHub
             throw new Exception(message: "Player train already attached at this location");
 
         this.communityIndex = index;
-        this.CommunityTrainPlacedBy = placedBy;
         this.CommunityTrainPlacedById = placedBy is null ? Guid.Empty : placedBy.PlayerId;
         this.hubPlayerAttachments[this.communityIndex] = player.PlayerId;
     }

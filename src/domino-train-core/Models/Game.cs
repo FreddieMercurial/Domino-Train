@@ -2,6 +2,7 @@
 using DominoTrain.Core.Models.Players;
 using DominoTrain.Core.Models.Rules;
 using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 
 namespace DominoTrain.Core.Models;
 
@@ -9,16 +10,28 @@ namespace DominoTrain.Core.Models;
 [DataContract]
 public class Game
 {
-    [DataMember] public readonly Guid GameId;
+    [DataMember][JsonPropertyName("gameId")] public readonly Guid GameId;
 
+    [DataMember]
+    [JsonPropertyName("ownerId")]
     private readonly Guid OwnerId;
+
     private Player Owner => this._players[this.OwnerId];
 
+    [DataMember]
+    [JsonPropertyName("players")]
     private readonly Dictionary<Guid, Player> _players;
 
+    [DataMember]
+    [JsonPropertyName("rules")]
     public readonly ISetRules Rules;
-    private DominoSet? dominoSet;
 
+    [DataMember]
+    [JsonPropertyName("dominoSet")]
+    public DominoSet? DominoSet { get; private set; }
+
+    [DataMember]
+    [JsonPropertyName("engineHub")]
     private EngineHub EngineHub;
 
     private readonly CommunityTrainPlayer communityTrainPlayer;
@@ -49,6 +62,10 @@ public class Game
             {
                 if (player is CommunityTrainPlayer ctp)
                 {
+                    if (this.communityTrainPlayer is not null)
+                    {
+                        throw new Exception("Only one CommunityTrainPlayer is allowed");
+                    }
                     this.communityTrainPlayer = ctp;
                     needCommunityPlayer = false;
                 }
@@ -75,24 +92,27 @@ public class Game
 
         // after players are set up
         // TODO: need ability to update player count on domino set before game starts?
-        this.dominoSet = new DominoSet(
+        this.DominoSet = new DominoSet(
                 game: this,
                 playerCount: this.PlayerCount,
                 rules: this.Rules);
-        this.DominoSetId = this.dominoSet?.SetId ?? Guid.Empty;
+        this.DominoSetId = this.DominoSet?.SetId ?? Guid.Empty;
     }
 
-    [DataMember] public Guid DominoSetId { get; private set; }
+    [DataMember][JsonPropertyName("dominoSetId")] public Guid DominoSetId { get; private set; }
 
-    public int HighestTile => this.dominoSet!.HighestTile;
+    [DataMember][JsonPropertyName("turn")] public int Turn { get; private set; }
 
-    [DataMember] public int Turn { get; private set; }
-
-    [DataMember] public Guid StationHubId => this.EngineHub.HubId;
+    [DataMember][JsonPropertyName("stationHubId")] public Guid StationHubId => this.EngineHub.HubId;
 
     private bool CanChange => !this.Ended && !this.Started;
 
+    [DataMember]
+    [JsonPropertyName("gameHistory")]
     public readonly GameEventLedger GameHistory;
+
+    [DataMember]
+    [JsonPropertyName("turnOrder")]
     public List<Guid> TurnOrder { get; }
 
     public int TurnIndex => this.CanChange ? this.Turn % this.PlayerCount : -1;
@@ -111,83 +131,78 @@ public class Game
             return !this._players.ContainsKey(key: currentPlayerId) ? null : this._players[key: currentPlayerId];
         }
     }
-    [DataMember] public DateTime DateCreated { get; private init; }
-    [DataMember] public DateTime? DateStarted { get; private set; } = null;
-    [DataMember] public DateTime? DateTurnStarted { get; private set; } = null;
-    [DataMember] public DateTime? DateEnded { get; private set; } = null;
-    [DataMember] public DateTime? DatePaused { get; private set; } = null;
+    [DataMember][JsonPropertyName("dateCreated")] public DateTime DateCreated { get; private init; }
+    [DataMember][JsonPropertyName("dateStarted")] public DateTime? DateStarted { get; private set; } = null;
+    [DataMember][JsonPropertyName("dateTurnStarted")] public DateTime? DateTurnStarted { get; private set; } = null;
+    [DataMember][JsonPropertyName("dateEnded")] public DateTime? DateEnded { get; private set; } = null;
+    [DataMember][JsonPropertyName("datePaused")] public DateTime? DatePaused { get; private set; } = null;
 
-    [DataMember] public bool Started
+    public bool Started
     {
-        get => DateStarted is not null;
+        get => this.DateStarted is not null;
         private set
         {
-            if (DateStarted is not null)
+            if (this.DateStarted is not null)
             {
                 throw new Exception("Game already started");
             }
-            DateStarted = DateTime.UtcNow;
+            this.DateStarted = DateTime.UtcNow;
         }
     }
 
-    [DataMember] public bool Ended
+    public bool Ended
     {
-        get => DateEnded is not null;
+        get => this.DateEnded is not null;
         private set
         {
-            if (DateEnded is not null)
+            if (this.DateEnded is not null)
             {
                 throw new Exception("Game already ended");
             }
-            DateEnded = DateTime.UtcNow;
+            this.DateEnded = DateTime.UtcNow;
         }
     }
 
-    [DataMember]
-    public bool TurnEnded
+    public bool TurnStarted
     {
-        get => DateTurnStarted is not null;
+        get => this.DateTurnStarted is not null;
         private set
         {
-            if (DateTurnStarted is not null)
+            if (this.DateTurnStarted is not null)
             {
                 throw new Exception("Turn already ended");
             }
-            DateTurnStarted = DateTime.UtcNow;
+            this.DateTurnStarted = DateTime.UtcNow;
         }
     }
 
-    [DataMember]
     public bool Paused
     {
-        get => DatePaused is not null;
+        get => this.DatePaused is not null;
         private set
         {
-            if (DatePaused is not null && value)
+            if (this.DatePaused is not null && value)
             {
                 throw new Exception("Already paused");
             }
-            else if (DatePaused is null && !value)
+            else if (this.DatePaused is null && !value)
             {
                 throw new Exception("not paused");
             }
             else if (value)
             {
-                DatePaused = DateTime.UtcNow;
+                this.DatePaused = DateTime.UtcNow;
             }
             else
             {
-                DatePaused = null;
+                this.DatePaused = null;
             }
         }
     }
 
-    public int PlayerCount => this._players.Count - this.CommunityPlayerCount;
+    public int PlayerCount => this._players.Count - (this.communityTrainPlayer is not null ? 1 : 0);
 
-    public int CommunityPlayerCount
-        => this._players.Count(predicate: player => player.Value.CommunityTrainVirtualPlayer);
-
-    public int HumanPlayerCount => this._players.Count(predicate: player => !player.Value.AI);
+    public int HumanPlayerCount => this._players.Count(predicate: player => !player.Value.AI && player.Value is not CommunityTrainPlayer);
 
     public int NetworkHumanPlayerCount
         => this._players.Count(predicate: player => player.Value.GetType() == typeof(HumanNetworkPlayer));
@@ -197,7 +212,7 @@ public class Game
     /// <summary>
     ///     TODO: quote rule
     /// </summary>
-    public int TileCount => this.dominoSet is not null ? this.dominoSet.Dominoes.Count : 0;
+    public int TileCount => this.DominoSet is not null ? this.DominoSet.Dominoes.Count : 0;
 
     public IEnumerable<Guid> AllPlayerIds => this._players.Keys;
 
@@ -208,7 +223,7 @@ public class Game
 
     public Player DetermineStartingPlayer()
     {
-        var startingTile = this.dominoSet!.HighestPlayerTile;
+        var startingTile = this.DominoSet!.HighestPlayerTile;
         return this.NonCommunityPlayerIds.Select(selector: this.GetPlayer)
             .First(predicate: player => player.HighestDouble == startingTile);
     }
@@ -218,7 +233,7 @@ public class Game
         if (this.CanChange)
             throw new InvalidOperationException(message: "Can only load domino set when a game is not in progress");
         this.DominoSetId = set.SetId;
-        this.dominoSet = set;
+        this.DominoSet = set;
     }
 
     public Player GetPlayer(Guid id)
@@ -228,7 +243,7 @@ public class Game
 
     public Domino? GetDomino(Guid id)
     {
-        return this.dominoSet?.GetDominoById(dominoId: id);
+        return this.DominoSet?.GetDominoById(dominoId: id);
     }
 
     public void Start()
@@ -307,12 +322,12 @@ public class Game
 
     public bool HasDomino(Domino domino)
     {
-        return this.dominoSet is not null && this.dominoSet.HasDomino(dominoId: domino.DominoId);
+        return this.DominoSet is not null && this.DominoSet.HasDomino(dominoId: domino.DominoId);
     }
 
     public bool HasDomino(Guid dominoId)
     {
-        return this.dominoSet is not null && this.dominoSet.HasDomino(dominoId: dominoId);
+        return this.DominoSet is not null && this.DominoSet.HasDomino(dominoId: dominoId);
     }
 
     public void AddPlayer(Player player)
@@ -377,9 +392,9 @@ public class Game
     private void Deal(Player player, int tileCount)
     {
         if (!this.CanChange) throw new Exception(message: "Game already in progress");
-        if (this.dominoSet is null)
+        if (this.DominoSet is null)
             throw new Exception(message: "No domino set");
-        this.dominoSet.Deal(player: player,
+        this.DominoSet.Deal(player: player,
             dominoes: tileCount);
     }
 
@@ -413,7 +428,7 @@ public class Game
             }
         }
 
-        this.dominoSet ??= new DominoSet(
+        this.DominoSet ??= new DominoSet(
             game: this,
             playerCount: this.PlayerCount,
             rules: this.Rules);
@@ -421,8 +436,8 @@ public class Game
         switch (this.Turn)
         {
             // if it is the first turn, the tile played must be the double with the value matching the HighestTile
-            case 0 when dominoInHand.Value1 != this.dominoSet.HighestTile ||
-                        dominoInHand.Value2 != this.dominoSet.HighestTile:
+            case 0 when dominoInHand.Value1 != this.DominoSet.HighestTile ||
+                        dominoInHand.Value2 != this.DominoSet.HighestTile:
                 return false;
             case 0:
                 this.EngineHub.SetEnginePlayer(player: this.CurrentPlayer);

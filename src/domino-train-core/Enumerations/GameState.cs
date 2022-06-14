@@ -1,7 +1,12 @@
 ﻿namespace DominoTrain.Core.Enumerations
 {
-    internal enum GameState
+    public enum GameState
     {
-
+        Lobby,
+        Game,
+        Paused,
+        GameOverLobby,
+        Archived,
+        ScheduledDeletion
     }
 }
