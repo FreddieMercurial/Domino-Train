@@ -1,7 +1,7 @@
 [submodule "src/firebaseJs"]
 	path = src/firebaseJs
 	url = https://github.com/FreddieMercurial/BlazorWasmFirebaseAuthJs.git
-	branch = main
+	branch = domino-train
 [submodule "src/Microsoft.Identity.Firebase"]
 	path = src/Microsoft.Identity.Firebase
 	url = https://github.com/FreddieMercurial/BlazorWasmFirebaseAuth.git
